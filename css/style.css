@@ -1,0 +1,37 @@
+html {
+    font-family: Arial;
+    width: 90%;
+    margin: auto;
+}
+
+.outline-header input {
+    font-size: 25px;
+    font-weight: bold;
+    border:none;
+    width:100%;
+}
+
+.outline-list {
+    list-style-type: none;
+    padding: 0;
+    margin:none;
+}
+
+.outline-list input {
+    border: none;
+    width: 100%;
+}
+
+/* styles for indentation levels */
+.level1 {
+    font-size: 20px;
+}
+.level2 {
+    font-size: 18px;
+}
+.level3 {
+    font-size: 16px;
+}
+.level4 {
+    font-size: 14px;
+}
