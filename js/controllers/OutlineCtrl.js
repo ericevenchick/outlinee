@@ -12,7 +12,9 @@ outlinear.controller('OutlineCtrl',
 
     // watch for content changes, save on change
     $scope.$watch('content', function() {
-        outlineLocalStorage.put($scope.outlineTitle, $scope.content);
+        if ($scope.outlineTitle != undefined) {
+            outlineLocalStorage.put($scope.outlineTitle, $scope.content);
+        }
     }, true);
 
     // watch for title changes, load on change
@@ -20,11 +22,18 @@ outlinear.controller('OutlineCtrl',
         var loaded = outlineLocalStorage.get($scope.outlineTitle);
         // if there's data to load, load it
         // if not, create a single element (new outline)
-        if (loaded.length)
+        if (loaded.length > 0) {
             $scope.content = loaded;
-        else
+        } else {
             $scope.content = [{str:"", ind:0}];
+        }
     });
+
+    // create a style for each line based on its content
+    $scope.styleForLine = function(line) {
+        // set the margin based on indent
+        return ("margin-left: " + INDENT_SIZE * line.ind + "px;");
+    }
 
     // create a title for the page
     $scope.pageTitle = function() {
@@ -62,9 +71,6 @@ outlinear.controller('OutlineCtrl',
 
         // set the new indent level
         $scope.content[index].ind = indent;
-        // apply style on parent li
-        var li = $(el).parent();
-        li.css('margin-left', (indent * INDENT_SIZE) + "px");
         // update the view
         $scope.$apply();
     }
@@ -72,14 +78,12 @@ outlinear.controller('OutlineCtrl',
     // increase line's indent level by 1
     $scope.increaseIndent = function(el) {
         var index = $scope.getInputIndex(el);
-        // increase indent level of line
         $scope.setIndent(el, $scope.content[index].ind + 1);
     }
 
     // decrease line's indent level by 1
     $scope.decreaseIndent = function(el) {
         var index = $scope.getInputIndex(el);
-        // decrease indent level of line
         $scope.setIndent(el, $scope.content[index].ind - 1);
     }
 

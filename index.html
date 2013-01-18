@@ -20,9 +20,8 @@
 
     <section class='outline-content'>
       <ul class='outline-list'>
-        <li ng-repeat='line in content'>
-          <input type='text' ng-model='line.str' style={{styleForLine(line)}}
-          ol-standard-input-keybindings 
+        <li ng-repeat='line in content' style={{styleForLine(line)}}>
+          <input type='text' ng-model='line.str' ol-standard-input-keybindings
           ng-class="{
             level1: line.ind == 0,
             level2: line.ind == 1,
