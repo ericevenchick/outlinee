@@ -10,6 +10,13 @@ html {
     border:none;
     width:100%;
 }
+.outline-header input:hover {
+    font-size: 25px;
+    font-weight: bold;
+    border:none;
+    width:100%;
+    outline: 2px solid #eee;
+}
 
 .outline-list {
     list-style-type: none;
@@ -18,14 +25,13 @@ html {
 }
 
 .outline-list div {
-    border: 2px solid white;
     width: 100%;
 }
 .outline-list div:hover {
-    border: 2px solid #eee;
+    outline: 2px solid #eee;
 }
 .outline-list div:focus {
-    outline: 2px solid #eee;
+    outline: 2px solid #bbb;
 }
 
 /* styles for indentation levels */
