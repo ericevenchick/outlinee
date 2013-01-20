@@ -1,10 +1,46 @@
-var directives = angular.module('outlinear.directives', [])
+var keyBindingDirective = angular.module('outlinear.keyBindingDirective', [])
 
 /*
  * Handles key presses for input elements
  */
 
-directives.directive('olVimInputKeybindings', function() {
+keyBindingDirective.directive('olStandardInputKeybindings', function() {
+    return function(scope, el, attr) {
+        el.bind('keydown', function(e) {
+            switch (e.keyCode) {
+                case 40: // down
+                    e.preventDefault()
+                    scope.focusNext(el);
+                    break;
+                case 38: // up
+                    e.preventDefault();
+                    scope.focusPrev(el);
+                    break;
+                case 9: // tab: change indent
+                    e.preventDefault();
+                    if (e.shiftKey)
+                        scope.decreaseIndent(el);
+                    else
+                        scope.increaseIndent(el);
+                    break;
+                case 13: // enter: create new line
+                    e.preventDefault();
+                    scope.insertLineAfter(el);
+                    console.log(el);
+                    scope.focusNext(el);
+                    break;
+                case 46: // delete: delete line
+                    e.preventDefault();
+                    scope.deleteLine(el);
+                    break;
+            }
+        });
+    }
+});
+
+
+
+keyBindingDirective.directive('olVimInputKeybindings', function() {
     var insert_mode = false;
     return function(scope, el, attr) {
         el.bind('keydown', function(e) {
@@ -57,38 +93,6 @@ directives.directive('olVimInputKeybindings', function() {
             }
         });
    }
-});
-
-directives.directive('olStandardInputKeybindings', function() {
-    return function(scope, el, attr) {
-        el.bind('keydown', function(e) {
-            switch (e.keyCode) {
-                case 40: // down
-                    e.preventDefault()
-                    scope.focusNext(el);
-                    break;
-                case 38: // up
-                    e.preventDefault();
-                    scope.focusPrev(el);
-                    break;
-                case 9: // tab: change indent
-                    e.preventDefault();
-                    if (e.shiftKey)
-                        scope.decreaseIndent(el);
-                    else
-                        scope.increaseIndent(el);
-                    break;
-                case 13: // enter: create new line
-                    scope.insertLineAfter(el);
-                    scope.focusNext(el);
-                    break;
-                case 46: // delete: delete line
-                    e.preventDefault();
-                    scope.deleteLine(el);
-                    break;
-            }
-        });
-    }
 });
 
 

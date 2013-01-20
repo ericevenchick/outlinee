@@ -7,4 +7,6 @@ Array.prototype.remove = function(from, to) {
   return this.push.apply(this, rest);
 };
 
-var outlinear = angular.module('outlinear', ['outlinear.directives']);
+var outlinear = angular.module('outlinear',
+                              ['outlinear.keyBindingDirective',
+                               'outlinear.contentEditableDirective']);

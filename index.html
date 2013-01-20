@@ -9,6 +9,7 @@
     <script src='js/services/OutlineLocalStorage.js'></script>
     <script src='js/controllers/OutlineCtrl.js'></script>
     <script src='js/directives/InputKeyBindings.js'></script>
+    <script src='js/directives/ContentEditable.js'></script>
     <script src='js/libs/jquery.min.js'></script>
   </head>
 
@@ -21,13 +22,15 @@
     <section class='outline-content'>
       <ul class='outline-list'>
         <li ng-repeat='line in content' style={{styleForLine(line)}}>
-          <input type='text' ng-model='line.str' ol-standard-input-keybindings
-          ng-class="{
+          <div
+            contenteditable
+            ng-model='line' ol-standard-input-keybindings
+            ng-class="{
             level1: line.ind == 0,
             level2: line.ind == 1,
             level3: line.ind == 2,
             level4: line.ind > 2
-            }">
+            }"></div>
         </li>
       </ul>
     </section>

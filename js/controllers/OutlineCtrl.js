@@ -8,7 +8,7 @@ outlinear.controller('OutlineCtrl',
     var MAX_INDENT = 30;
 
     // by default, start with one element (new outline)
-    $scope.content = [{str:"", ind:0}];
+    $scope.content = [{str:"bc", ind:0},{str:"de",ind:0}];
 
     // watch for content changes, save on change
     $scope.$watch('content', function() {
@@ -41,17 +41,17 @@ outlinear.controller('OutlineCtrl',
                                      ("outlinear");
     }
 
-    // given an input element, focus the next input element
+    // given an element, focus the next div element
     $scope.focusNext = function(el) {
-        $(el).parent().next().find('input').focus();
+        $(el).parent().next().find('div').focus();
     }
 
-    // given an input element, focus the previous element
+    // given an element, focus the previous div element
     $scope.focusPrev = function(el) {
-        $(el).parent().prev().find('input').focus();
+        $(el).parent().prev().find('div').focus();
     }
 
-    // get the index of an input element
+    // get the index of a div element
     $scope.getInputIndex = function(el) {
         // get input element's parent li
         var li = $(el).parent();

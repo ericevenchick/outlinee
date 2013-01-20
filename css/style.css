@@ -17,9 +17,15 @@ html {
     margin:none;
 }
 
-.outline-list input {
-    border: none;
+.outline-list div {
+    border: 2px solid white;
     width: 100%;
+}
+.outline-list div:hover {
+    border: 2px solid #eee;
+}
+.outline-list div:focus {
+    outline: 2px solid #eee;
 }
 
 /* styles for indentation levels */
