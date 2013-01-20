@@ -4,6 +4,7 @@ html {
     margin: auto;
 }
 
+/* styles for title box */
 .outline-header input {
     font-size: 25px;
     font-weight: bold;
@@ -24,6 +25,7 @@ html {
     margin:none;
 }
 
+/* styles for lines */
 .outline-list div {
     width: 100%;
 }
@@ -34,7 +36,7 @@ html {
     outline: 2px solid #bbb;
 }
 
-/* styles for indentation levels */
+/* styles for line indentation levels */
 .level1 {
     font-size: 20px;
 }
