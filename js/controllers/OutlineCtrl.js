@@ -22,7 +22,7 @@ outlinear.controller('OutlineCtrl',
         var loaded = outlineLocalStorage.get($scope.outlineTitle);
         // if there's data to load, load it
         // if not, create a single element (new outline)
-        if (loaded.length > 0) {
+        if (loaded > 0) {
             $scope.content = loaded;
         } else {
             $scope.content = [{str:"", ind:0}];
