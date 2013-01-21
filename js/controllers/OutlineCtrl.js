@@ -12,7 +12,8 @@ outlinear.controller('OutlineCtrl',
 
     // watch for content changes, save on change
     $scope.$watch('content', function() {
-        if ($scope.outlineTitle != undefined) {
+        // only save if the title is defined and if there is content
+        if ($scope.outlineTitle && $scope.content.length > 0) {
             outlineLocalStorage.put($scope.outlineTitle, $scope.content);
         }
     }, true);
@@ -22,7 +23,7 @@ outlinear.controller('OutlineCtrl',
         var loaded = outlineLocalStorage.get($scope.outlineTitle);
         // if there's data to load, load it
         // if not, create a single element (new outline)
-        if (loaded) {
+        if (loaded && loaded.length > 0) {
             $scope.content = loaded;
         } else {
             $scope.content = [{str:"", ind:0}];
