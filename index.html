@@ -2,7 +2,7 @@
 <html ng-app='outlinear' ng-controller='OutlineCtrl'>
 
   <head>
-    <title>{{pageTitle()}}</title>
+    <title ng:bind-template='{{pageTitle()}}'>outlinear</title>
     <link rel='stylesheet' href='css/style.css'>
     <link rel='stylesheet' href='css/libs/jquery-ui-min.css'>
     <script src='js/libs/jquery.min.js'></script>
