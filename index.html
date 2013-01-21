@@ -4,19 +4,23 @@
   <head>
     <title>{{pageTitle()}}</title>
     <link rel='stylesheet' href='css/style.css'>
+    <link rel='stylesheet' href='css/libs/jquery-ui-min.css'>
+    <script src='js/libs/jquery.min.js'></script>
     <script src='js/libs/angular.min.js'></script>
+    <script src='js/libs/jquery-ui.min.js'></script>
     <script src='js/app.js'></script>
     <script src='js/services/OutlineLocalStorage.js'></script>
     <script src='js/controllers/OutlineCtrl.js'></script>
     <script src='js/directives/InputKeyBindings.js'></script>
     <script src='js/directives/ContentEditable.js'></script>
-    <script src='js/libs/jquery.min.js'></script>
+    <script src='js/directives/Autocomplete.js'></script>
   </head>
 
   <body>
 
     <header class='outline-header'>
-      <input type='text' ng-model='outlineTitle' placeholder="untitled">
+      <input type='text' ng-model='outlineTitle' placeholder="untitled" 
+      ol-title-autocomplete>
     </header>
 
     <section class='outline-content'>

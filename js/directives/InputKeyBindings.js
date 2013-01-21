@@ -26,7 +26,6 @@ keyBindingDirective.directive('olStandardInputKeybindings', function() {
                 case 13: // enter: create new line
                     e.preventDefault();
                     scope.insertLineAfter(el);
-                    console.log(el);
                     scope.focusNext(el);
                     break;
                 case 46: // delete: delete line
@@ -46,7 +45,6 @@ keyBindingDirective.directive('olVimInputKeybindings', function() {
         el.bind('keydown', function(e) {
             // special case when CTRL is pressed
             // avoids preventing default browser behaviour
-            console.log(e);
             if (e.ctrlKey) {
                 return;
             }

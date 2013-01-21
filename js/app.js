@@ -9,4 +9,5 @@ Array.prototype.remove = function(from, to) {
 
 var outlinear = angular.module('outlinear',
                               ['outlinear.keyBindingDirective',
-                               'outlinear.contentEditableDirective']);
+                               'outlinear.contentEditableDirective',
+                               'outlinear.titleAutocompleteDirective']);
