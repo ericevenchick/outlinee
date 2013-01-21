@@ -7,13 +7,19 @@ outlinear.controller('OutlineCtrl',
     var INDENT_SIZE = 40;
     var MAX_INDENT = 30;
 
+    // get the names of all the outlines
+    $scope.outlineTitleList = outlineLocalStorage.getOutlines();
+
     // by default, start with one element (new outline)
     $scope.content = [{str:"bc", ind:0},{str:"de",ind:0}];
 
     // watch for content changes, save on change
     $scope.$watch('content', function() {
         // only save if the title is defined and if there is content
-        if ($scope.outlineTitle && $scope.content.length > 0) {
+        if ($scope.outlineTitle &&
+            $scope.content.length > 0 &&
+            $scope.content[0].str != "") {
+
             outlineLocalStorage.put($scope.outlineTitle, $scope.content);
         }
     }, true);
