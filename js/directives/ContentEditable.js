@@ -18,7 +18,7 @@ keyBindingDirective.directive('contenteditable', function() {
             // update the model
             element.bind('blur changed keydown', function() {
                 read();
-                scope.$apply();
+                if (!scope.$$phase) scope.$apply();
             });
             // initialize
             read();

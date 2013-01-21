@@ -134,6 +134,41 @@ outlinear.controller('OutlineCtrl',
                          $scope.content[index].ind);
     }
 
+    // move a line up one position
+    $scope.moveUp = function(el) {
+        var index = $scope.getInputIndex(el);
+
+        // not possible if first element
+        if (index == 0) return;
+
+        // perform switch
+        var temp = $scope.content[index];
+        $scope.content[index] = $scope.content[index - 1];
+        $scope.content[index - 1] = temp;
+
+        $scope.$apply();
+
+        el.focus();
+    }
+
+    // move a line down one position
+    $scope.moveDown = function(el) {
+        var index = $scope.getInputIndex(el);
+
+        // not possible if last element
+        if (index == ($scope.content.length - 1)) return;
+
+        // perform switch
+        var temp = $scope.content[index];
+        $scope.content[index] = $scope.content[index + 1];
+        $scope.content[index + 1] = temp;
+
+        $scope.$apply();
+
+        // refocus the element
+        el.focus();
+    }
+
     // delete a line given its input element
     $scope.deleteLine = function(el) {
         // only allow a delete if there's more than one line left!

@@ -14,6 +14,16 @@ keyBindingDirective.directive('olStandardInputKeybindings', function() {
                         e.preventDefault();
                         scope.toggleStrike(el);
                         break;
+
+                    case 40: // CTRL-down: move line down
+                        e.preventDefault();
+                        scope.moveDown(el);
+                        break;
+
+                    case 38: // CTRL-up: move line up
+                        e.preventDefault();
+                        scope.moveUp(el);
+                        break;
                 }
                 return;
             }
