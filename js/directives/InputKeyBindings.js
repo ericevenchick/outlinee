@@ -7,6 +7,17 @@ var keyBindingDirective = angular.module('outlinear.keyBindingDirective', [])
 keyBindingDirective.directive('olStandardInputKeybindings', function() {
     return function(scope, el, attr) {
         el.bind('keydown', function(e) {
+            // CTRL key commands
+            if (e.ctrlKey) {
+                switch (e.keyCode) {
+                    case 83: // CTRL-S: strikethrough
+                        e.preventDefault();
+                        scope.toggleStrike(el);
+                        break;
+                }
+                return;
+            }
+
             switch (e.keyCode) {
                 case 40: // down
                     e.preventDefault()

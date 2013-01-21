@@ -10,15 +10,12 @@ outlinear.controller('OutlineCtrl',
     // get the names of all the outlines
     $scope.outlineTitleList = outlineLocalStorage.getOutlines();
 
-    // by default, start with one element (new outline)
-    $scope.content = [{str:"bc", ind:0},{str:"de",ind:0}];
-
     // watch for content changes, save on change
     $scope.$watch('content', function() {
         // only save if the title is defined and if there is content
         if ($scope.outlineTitle &&
             $scope.content.length > 0 &&
-            $scope.content[0].str != "") {
+            $scope.content[0].str != '') {
 
             outlineLocalStorage.put($scope.outlineTitle, $scope.content);
         }
@@ -32,20 +29,26 @@ outlinear.controller('OutlineCtrl',
         if (loaded && loaded.length > 0) {
             $scope.content = loaded;
         } else {
-            $scope.content = [{str:"", ind:0}];
+            $scope.content = [{str:'', ind:0}];
         }
     });
 
-    // create a style for each line based on its content
+    // create a style for each line
     $scope.styleForLine = function(line) {
+        var styles = [];
+
+        // set strikethrough
+        if (line.strike) styles.push('text-decoration: line-through');
         // set the margin based on indent
-        return ("margin-left: " + INDENT_SIZE * line.ind + "px;");
+        styles.push('margin-left: ' + INDENT_SIZE * line.ind + 'px');
+
+        return styles.join('; ');
     }
 
     // create a title for the page
     $scope.pageTitle = function() {
-        return $scope.outlineTitle ? ($scope.outlineTitle + " | outlinear") :
-                                     ("outlinear");
+        return $scope.outlineTitle ? ($scope.outlineTitle + ' | outlinear') :
+                                     ('outlinear');
     }
 
     // given an element, focus the next div element
@@ -94,12 +97,19 @@ outlinear.controller('OutlineCtrl',
         $scope.setIndent(el, $scope.content[index].ind - 1);
     }
 
+    // set strikethrough property of the line
+    $scope.toggleStrike = function(el, value) {
+        var index = $scope.getInputIndex(el);
+        $scope.content[index].strike = !($scope.content[index].strike);
+        $scope.$apply();
+    }
+
     // insert a line after an input element's line
     $scope.insertLineAfter = function(el) {
         var index = $scope.getInputIndex(el);
         // add an element after the current one
         $scope.content.splice(index + 1, 0, {
-            str: "",
+            str: '',
             ind:0
         });
         // poke the view
