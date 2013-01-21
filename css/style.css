@@ -39,9 +39,11 @@ html {
 /* styles for line indentation levels */
 .level1 {
     font-size: 20px;
+    padding: 4px;
 }
 .level2 {
     font-size: 18px;
+    padding: 2px;
 }
 .level3 {
     font-size: 16px;
