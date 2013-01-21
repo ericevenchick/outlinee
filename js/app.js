@@ -11,3 +11,11 @@ var outlinear = angular.module('outlinear',
                               ['outlinear.keyBindingDirective',
                                'outlinear.contentEditableDirective',
                                'outlinear.titleAutocompleteDirective']);
+
+// routing
+outlinear.config(['$routeProvider', '$locationProvider',
+    function($routeProvider, $locationProvider, OutlineCtrl) {
+        $locationProvider.html5Mode(false);
+        $routeProvider.when('/:outlineId', {controller: 'OutlineCtrl'});
+    }
+]);

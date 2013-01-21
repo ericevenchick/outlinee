@@ -1,11 +1,18 @@
 'use strict';
 
 outlinear.controller('OutlineCtrl',
-                     function outlineCtrl($scope, outlineLocalStorage)
+                     function outlineCtrl($scope,
+                                          outlineLocalStorage,
+                                          $location)
 {
     // constants
     var INDENT_SIZE = 40;
     var MAX_INDENT = 30;
+
+    // use path to get outline name
+    // TODO: this could use real routing rather than substr
+    var pathTitle = $location.path().substr(1);
+    $scope.outlineTitle = pathTitle ? pathTitle : '';
 
     // get the names of all the outlines
     $scope.outlineTitleList = outlineLocalStorage.getOutlines();
@@ -14,6 +21,7 @@ outlinear.controller('OutlineCtrl',
     $scope.$watch('content', function() {
         // only save if the title is defined and if there is content
         if ($scope.outlineTitle &&
+            $scope.content &&
             $scope.content.length > 0 &&
             $scope.content[0].str != '') {
 
@@ -71,10 +79,16 @@ outlinear.controller('OutlineCtrl',
     // set the indent level of a line
     $scope.setIndent = function(el, indent) {
         // do nothing if indent is not valid
-        if (indent < 0 || indent > MAX_INDENT)
-            return;
+        if (indent < 0 || indent > MAX_INDENT) return;
 
         var index = $scope.getInputIndex(el);
+
+        // first line must be level 0
+        if (index == 0) indent = 0;
+        // ensure that indent is no more than 1 greater than previous line
+        if (index > 0 && indent > ($scope.content[index - 1].ind + 1)) {
+            return;
+        }
 
         // get the current indent level
         var curIndent = $scope.content[index].ind;
