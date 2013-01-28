@@ -141,11 +141,31 @@ outlinear.controller('OutlineCtrl',
         // not possible if first element
         if (index == 0) return;
 
-        // perform switch
-        var temp = $scope.content[index];
-        $scope.content[index] = $scope.content[index - 1];
-        $scope.content[index - 1] = temp;
+        // get number of elements to move, which is this element plus number
+        // of child elements
+        var numElements = 1;
+        while (($scope.content[index + numElements]) &&
+               ($scope.content[index + numElements].ind >
+                $scope.content[index].ind))
+        {
+            numElements = numElements + 1;
+        }
+        // number ofchildren of previous element,
+        // skip over these when inserting
+        var numSkip = 1;
+        while (($scope.content[index - numSkip]) &&
+               ($scope.content[index - numSkip].ind >
+                $scope.content[index].ind))
+        {
+            numSkip = numSkip + 1;
+        }
 
+        // perform move
+        var temp = $scope.content.splice(index, numElements);
+        for (var i = 0; i < temp.length; i++) {
+            console.log(index-numSkip-i);
+            $scope.content.splice(index - numSkip + i, 0, temp[i]);
+        }
         $scope.$apply();
 
         el.focus();
@@ -158,10 +178,30 @@ outlinear.controller('OutlineCtrl',
         // not possible if last element
         if (index == ($scope.content.length - 1)) return;
 
-        // perform switch
-        var temp = $scope.content[index];
-        $scope.content[index] = $scope.content[index + 1];
-        $scope.content[index + 1] = temp;
+        // get number of elements to move, which is this element plus number
+        // of child elements
+        var numElements = 1;
+        while (($scope.content[index + numElements]) &&
+               ($scope.content[index + numElements].ind >
+                $scope.content[index].ind))
+        {
+            numElements = numElements + 1;
+        }
+        // number of children of next element,
+        // skip over these when inserting
+        var numSkip = 1;
+        while (($scope.content[index + numElements + numSkip]) &&
+               ($scope.content[index + numElements + numSkip].ind >
+                $scope.content[index].ind))
+        {
+            numSkip = numSkip + 1;
+        }
+
+        // perform move
+        var temp = $scope.content.splice(index, numElements);
+        for (var i = 0; i < temp.length; i++) {
+            $scope.content.splice(index + numSkip + i, 0, temp[i]);
+        }
 
         $scope.$apply();
 
