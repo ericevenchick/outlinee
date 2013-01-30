@@ -141,6 +141,9 @@ outlinear.controller('OutlineCtrl',
         // not possible if first element
         if (index == 0) return;
 
+        // prevent moving if element above is of lower indent level
+        if ($scope.content[index-1].ind < $scope.content[index].ind) return;
+
         // get number of elements to move, which is this element plus number
         // of child elements
         var numElements = 1;
@@ -160,10 +163,13 @@ outlinear.controller('OutlineCtrl',
             numSkip = numSkip + 1;
         }
 
+        // prevent moving if element above is of lower indent level
+        if ($scope.content[index-1].ind < $scope.content[index].ind) return;
+
+
         // perform move
         var temp = $scope.content.splice(index, numElements);
         for (var i = 0; i < temp.length; i++) {
-            console.log(index-numSkip-i);
             $scope.content.splice(index - numSkip + i, 0, temp[i]);
         }
         $scope.$apply();
@@ -196,6 +202,12 @@ outlinear.controller('OutlineCtrl',
         {
             numSkip = numSkip + 1;
         }
+
+        // prevent moving if element below group is of lower indent level
+        if ($scope.content[index+numElements] &&
+            $scope.content[index+numElements].ind <
+            $scope.content[index].ind) return;
+
 
         // perform move
         var temp = $scope.content.splice(index, numElements);
