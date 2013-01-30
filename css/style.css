@@ -28,12 +28,14 @@ html {
 /* styles for lines */
 .outline-list div {
     width: 100%;
+    margin-top: 3px;
+    margin-bottom: 3px;
 }
 .outline-list div:hover {
-    outline: 2px solid #eee;
+    border: 2px solid #eee;
 }
 .outline-list div:focus {
-    outline: 2px solid #bbb;
+    border: 2px solid #bbb;
 }
 
 /* styles for line indentation levels */
