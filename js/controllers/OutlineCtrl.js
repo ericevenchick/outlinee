@@ -47,8 +47,15 @@ outlinear.controller('OutlineCtrl',
 
         // set strikethrough
         if (line.strike) styles.push('text-decoration: line-through');
+
         // set the margin based on indent
         styles.push('margin-left: ' + INDENT_SIZE * line.ind + 'px');
+
+        // if line is hidden, do not display, take up no space
+        if (line.hidden) styles.push('display: none');
+
+        // make line bold if folded
+        if (line.folded) styles.push('font-weight: bold');
 
         return styles.join('; ');
     }
@@ -61,12 +68,35 @@ outlinear.controller('OutlineCtrl',
 
     // given an element, focus the next div element
     $scope.focusNext = function(el) {
-        $(el).parent().next().find('div').focus();
+        var index = $scope.getInputIndex(el);
+
+        // not possible if last
+        if (index == $scope.content.length - 1) return;
+
+        // skip over hidden elements
+        var numSkip = 1;
+        while ($scope.content[index + numSkip].hidden) {
+            numSkip++;
+        }
+
+        $('ul li:nth-child(' + (index + numSkip + 1) + ')').find('div').focus();
     }
 
     // given an element, focus the previous div element
     $scope.focusPrev = function(el) {
-        $(el).parent().prev().find('div').focus();
+        var index = $scope.getInputIndex(el);
+
+        // not possible if first
+        if (index == 0) return;
+
+        // skip over hidden elements
+        var numSkip = 1;
+        while ($scope.content[index - numSkip].hidden) {
+            numSkip++;
+        }
+
+        // focus the nth div
+        $('ul li:nth-child(' + (index - numSkip + 1) + ')').find('div').focus();
     }
 
     // get the index of a div element
@@ -240,5 +270,34 @@ outlinear.controller('OutlineCtrl',
         $scope.$apply();
         // apply focus
         toFocus.focus();
+    }
+
+    // fold an element
+    $scope.fold = function(el) {
+        var index = $scope.getInputIndex(el);
+
+        for (var i = index+1;
+             $scope.content[i].ind > $scope.content[index].ind;
+             i++)
+        {
+            $scope.content[i].hidden = true;
+            $scope.content[index].folded = true;
+        }
+        $scope.$apply();
+    }
+
+    // unfold an element
+    $scope.unfold = function(el) {
+        var index = $scope.getInputIndex(el);
+
+        // only unfold one level
+        for (var i = index+1;
+             $scope.content[i].ind > $scope.content[index].ind;
+             i++)
+        {
+            $scope.content[i].hidden = false;
+            $scope.content[index].folded = false;
+        }
+        $scope.$apply();
     }
 })

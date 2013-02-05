@@ -24,6 +24,16 @@ keyBindingDirective.directive('olStandardInputKeybindings', function() {
                         e.preventDefault();
                         scope.moveUp(el);
                         break;
+
+                    case 37: // CTRL-left: fold
+                        e.preventDefault();
+                        scope.fold(el);
+                        break;
+
+                    case 39: // CTRL-left: unfold
+                        e.preventDefault();
+                        scope.unfold(el);
+                        break;
                 }
                 return;
             }
@@ -57,7 +67,6 @@ keyBindingDirective.directive('olStandardInputKeybindings', function() {
         });
     }
 });
-
 
 
 keyBindingDirective.directive('olVimInputKeybindings', function() {
