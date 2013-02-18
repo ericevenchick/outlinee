@@ -282,8 +282,8 @@ outlinear.controller('OutlineCtrl',
         {
             $scope.content[i].hidden = true;
             $scope.content[index].folded = true;
+            $scope.$apply();
         }
-        $scope.$apply();
     }
 
     // unfold an element
@@ -297,7 +297,7 @@ outlinear.controller('OutlineCtrl',
         {
             $scope.content[i].hidden = false;
             $scope.content[index].folded = false;
+            $scope.$apply();
         }
-        $scope.$apply();
     }
 })
