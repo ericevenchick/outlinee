@@ -32,10 +32,10 @@ html {
     margin-bottom: 3px;
 }
 .outline-list div:hover {
-    border: 2px solid #eee;
+    outline: 2px solid #eee;
 }
 .outline-list div:focus {
-    border: 2px solid #bbb;
+    outline: 2px solid #bbb;
 }
 
 /* styles for line indentation levels */
