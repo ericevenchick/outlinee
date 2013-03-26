@@ -41,6 +41,12 @@ outlinear.controller('OutlineCtrl',
         }
     });
 
+    // create a title for the page
+    $scope.pageTitle = function() {
+        return $scope.outlineTitle ? ($scope.outlineTitle + ' | outlinear') :
+                                     ('outlinear');
+    }
+
     // create a style for each line
     $scope.styleForLine = function(line) {
         var styles = [];
@@ -57,11 +63,6 @@ outlinear.controller('OutlineCtrl',
         return styles.join('; ');
     }
 
-    // create a title for the page
-    $scope.pageTitle = function() {
-        return $scope.outlineTitle ? ($scope.outlineTitle + ' | outlinear') :
-                                     ('outlinear');
-    }
 
     // given an element, focus the next div element
     $scope.focusNext = function(el) {
@@ -189,6 +190,7 @@ outlinear.controller('OutlineCtrl',
         }
         $scope.$apply();
 
+        // refocus the element
         el.focus();
     }
 
