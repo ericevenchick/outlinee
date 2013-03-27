@@ -37,7 +37,7 @@ outlinear.controller('OutlineCtrl',
         if (loaded && loaded.length > 0) {
             $scope.content = loaded;
         } else {
-            $scope.content = [{str:'', ind:0}];
+            $scope.content = [{str:'...', ind:0}];
         }
     });
 
