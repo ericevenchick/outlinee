@@ -21,32 +21,34 @@
   </head>
 
   <body>
-
-    <header class='outline-header'>
-      <div ng-controller='DropboxCtrl' style="float:right">
+    <div id='page-header' style="float:right">
+      <span>about | </span>
+      <span ng-controller='DropboxCtrl'>
         <a href="#" ng-click='dropboxConnect()' ng-hide='dropboxConnected'>
-          Connect to Dropbox
+          login
         </a>
-        <span ng-show='dropboxConnected'>Connected!</a>
-      </div>
-      <input type='text' ng-model='outlineTitle' placeholder="untitled"
-      ol-title-autocomplete>
+        <span ng-show='dropboxConnected'>connected</a>
+      </span>
+    </div>
+    <header class='outline-header'>
+    <input type='text' ng-model='outlineTitle' placeholder="untitled"
+    ol-title-autocomplete>
     </header>
 
     <section class='outline-content'>
-      <ul class='outline-list'>
-        <li ng-repeat='line in content' style={{styleForLine(line)}}>
-          <div
-            contenteditable
-            ng-model='line' ol-standard-input-keybindings
-            ng-class="{
-            level1: line.ind == 0,
-            level2: line.ind == 1,
-            level3: line.ind == 2,
-            level4: line.ind > 2
-            }"></div>
-        </li>
-      </ul>
+    <ul class='outline-list'>
+      <li ng-repeat='line in content' style={{styleForLine(line)}}>
+      <div
+        contenteditable
+        ng-model='line' ol-standard-input-keybindings
+        ng-class="{
+        level1: line.ind == 0,
+        level2: line.ind == 1,
+        level3: line.ind == 2,
+        level4: line.ind > 2
+        }"></div>
+      </li>
+    </ul>
     </section>
 
   </body>
