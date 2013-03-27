@@ -15,8 +15,12 @@ outlinear.controller('OutlineCtrl',
     var pathTitle = $location.path().substr(1);
     $scope.outlineTitle = pathTitle ? pathTitle : '';
 
-    // get the names of all the outlines
+    // get the names of all the outlines in local storage
     $scope.outlineTitleList = localStorageService.getOutlines();
+    // grab the outlines from dropbox
+    if (dropboxService.isAuthenticated()) {
+        $scope.outlineTitleList = dropboxService.getOutlines();
+    }
 
     // watch for content changes, save on change
     $scope.$watch('content', function() {
