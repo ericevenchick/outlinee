@@ -2,7 +2,8 @@
 
 outlinear.controller('OutlineCtrl',
                      function outlineCtrl($scope,
-                                          outlineLocalStorage,
+                                          localStorageService,
+                                          dropboxService,
                                           $location)
 {
     // constants
@@ -15,7 +16,7 @@ outlinear.controller('OutlineCtrl',
     $scope.outlineTitle = pathTitle ? pathTitle : '';
 
     // get the names of all the outlines
-    $scope.outlineTitleList = outlineLocalStorage.getOutlines();
+    $scope.outlineTitleList = localStorageService.getOutlines();
 
     // watch for content changes, save on change
     $scope.$watch('content', function() {
@@ -25,13 +26,13 @@ outlinear.controller('OutlineCtrl',
             $scope.content.length > 0 &&
             $scope.content[0].str != '') {
 
-            outlineLocalStorage.put($scope.outlineTitle, $scope.content);
+            localStorageService.put($scope.outlineTitle, $scope.content);
         }
     }, true);
 
     // watch for title changes, load on change
     $scope.$watch('outlineTitle', function() {
-        var loaded = outlineLocalStorage.get($scope.outlineTitle);
+        var loaded = localStorageService.get($scope.outlineTitle);
         // if there's data to load, load it
         // if not, create a single element (new outline)
         if (loaded && loaded.length > 0) {

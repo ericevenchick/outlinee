@@ -2,7 +2,7 @@
 
 
 // provides local storage for outlines
-outlinear.factory('outlineLocalStorage', function() {
+outlinear.factory('localStorageService', function() {
     var STORAGE_ID_PREFIX = 'outlinear-';
     return {
         get: function(name) {

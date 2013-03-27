@@ -5,6 +5,10 @@ html {
 }
 
 /* styles for title box */
+.outline-header {
+    width: 100%;
+}
+
 .outline-header input {
     font-size: 25px;
     font-weight: bold;
@@ -12,10 +16,6 @@ html {
     width:100%;
 }
 .outline-header input:hover {
-    font-size: 25px;
-    font-weight: bold;
-    border:none;
-    width:100%;
     outline: 2px solid #eee;
 }
 
