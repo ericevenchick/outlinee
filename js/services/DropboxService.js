@@ -1,7 +1,7 @@
 outlinear.service('dropboxService', function() {
     var client;
     return {
-        connect: function() {
+        connect: function(scope) {
             client = new Dropbox.Client({
                 key: 'qHAKiRxtIqA=|OdZ7A5Wo3uPEA8Zittjh+nxnpEY5UwntwPNp5ORNOA==',
                    sandbox: true});
@@ -15,6 +15,7 @@ outlinear.service('dropboxService', function() {
                         return false;
                     }
                     client = authClient;
+                    scope.$emit('dropboxConnected');
                     return true;
                 });
         },

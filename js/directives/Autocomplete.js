@@ -15,6 +15,18 @@ titleAutocompleteDirective.directive('olTitleAutocomplete', function() {
                     }, 0);
                 }
             });
+            // update the autocomplete contents when dropbox is available
+            scope.$on('dropboxConnected', function() {
+                element.autocomplete({
+                    source: scope.outlineTitleList,
+                    select: function() {
+                        setTimeout(function() {
+                            element.trigger('input');
+                        }, 0);
+                    }
+                });
+            });
+
         }
     }
 });

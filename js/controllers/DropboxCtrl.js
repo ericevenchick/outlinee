@@ -3,9 +3,11 @@
 outlinear.controller('DropboxCtrl',
                      function dropboxCtrl($scope,
                                           dropboxService) {
-    dropboxService.connect();
+    if (dropboxService.connect($scope));
+
     $scope.dropboxConnect = function() {
         dropboxService.auth();
+        $scope.$emit('dropboxConnected')
     }
 });
 
