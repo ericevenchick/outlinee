@@ -19,7 +19,7 @@ outlinear.service('dropboxService', function() {
                     return true;
                 });
         },
-        auth: function() {
+        auth: function(scope) {
             if (client && client.isAuthenticated()) return;
 
             client.authenticate(function(error, authClient) {
@@ -29,6 +29,7 @@ outlinear.service('dropboxService', function() {
                     return false;
                 }
                 client = authClient;
+                scope.$emit('dropboxConnected');
                 return true;
             });
 
@@ -36,7 +37,7 @@ outlinear.service('dropboxService', function() {
         isAuthenticated: function() {
             return client && client.isAuthenticated();
         },
-        getOutlines: function() {
+        getList: function() {
             var result = [];
             if (!client || !client.isAuthenticated()) return false;
 
@@ -53,6 +54,17 @@ outlinear.service('dropboxService', function() {
                 }
             });
             return result;
+        },
+        getOutline: function(name) {
+            client.readFile(name, function(error, data) {
+                if (error) {
+                    console.log('[ERROR] getting file');
+                    console.log(error);
+                    return false;
+                }
+                console.log(data);
+                return [{str:'from dropbox',ind:0}];
+            });
         }
     };
 });

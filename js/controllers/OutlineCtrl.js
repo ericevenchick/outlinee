@@ -19,7 +19,7 @@ outlinear.controller('OutlineCtrl',
     $scope.outlineTitleList = localStorageService.getOutlines();
     // grab the outlines from dropbox
     $scope.$on('dropboxConnected', function() {
-        $scope.outlineTitleList = dropboxService.getOutlines();
+        $scope.outlineTitleList = dropboxService.getList();
     });
 
     // watch for content changes, save on change
@@ -36,7 +36,9 @@ outlinear.controller('OutlineCtrl',
 
     // watch for title changes, load on change
     $scope.$watch('outlineTitle', function() {
-        var loaded = localStorageService.get($scope.outlineTitle);
+        // FIXME: do both local and dropbox
+        //var loaded = localStorageService.get($scope.outlineTitle);
+        var loaded = dropboxService.getOutline($scope.outlineTitle);
         // if there's data to load, load it
         // if not, create a single element (new outline)
         if (loaded && loaded.length > 0) {
