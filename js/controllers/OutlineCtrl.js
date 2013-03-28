@@ -19,7 +19,9 @@ outlinear.controller('OutlineCtrl',
     $scope.outlineTitleList = localStorageService.getOutlines();
     // grab the outlines from dropbox
     $scope.$on('dropboxConnected', function() {
-        $scope.outlineTitleList = dropboxService.getList();
+        if (dropboxService.isAuthenticated()) {
+            $scope.outlineTitleList = dropboxService.getList();
+        }
     });
 
     // watch for content changes, save on change
@@ -31,23 +33,38 @@ outlinear.controller('OutlineCtrl',
             $scope.content[0].str != '') {
 
             localStorageService.put($scope.outlineTitle, $scope.content);
+            dropboxService.putOutline($scope.outlineTitle, $scope.content);
         }
     }, true);
 
     // watch for title changes, load on change
     $scope.$watch('outlineTitle', function() {
-        // FIXME: do both local and dropbox
-        //var loaded = localStorageService.get($scope.outlineTitle);
-        var loaded = dropboxService.getOutline($scope.outlineTitle);
-        // if there's data to load, load it
-        // if not, create a single element (new outline)
-        if (loaded && loaded.length > 0) {
-            $scope.content = loaded;
-        } else {
-            $scope.content = [{str:'...', ind:0}];
+        // start fetching from dropbox
+        dropboxService.getOutline($scope, $scope.outlineTitle);
+
+        // load from localStorage if not connected to dropbox
+        if (!dropboxService.isAuthenticated()) {
+            var loaded = localStorageService.get($scope.outlineTitle);
+            // if there's data to load, load it
+            // if not, create a single element (new outline)
+            if (loaded && loaded.length > 0) {
+                $scope.content = loaded;
+            } else {
+                $scope.content = [{str:'', ind:0}];
+            }
         }
     });
 
+    // put data into outline when it's fetched from dropbox
+    $scope.$on('dropboxGotOutline', function() {
+        var loaded = dropboxService.getOutlineData();
+        if (loaded && loaded.length > 0) {
+            $scope.content = loaded;
+        } else {
+            $scope.content = [{str:'', ind:0}];
+        }
+        $scope.$apply();
+    });
     // create a title for the page
     $scope.pageTitle = function() {
         return $scope.outlineTitle ? ($scope.outlineTitle + ' | outlinear') :

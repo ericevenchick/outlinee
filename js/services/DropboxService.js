@@ -1,5 +1,6 @@
 outlinear.service('dropboxService', function() {
     var client;
+    var outlineData = [];
     return {
         connect: function(scope) {
             client = new Dropbox.Client({
@@ -55,15 +56,40 @@ outlinear.service('dropboxService', function() {
             });
             return result;
         },
-        getOutline: function(name) {
-            client.readFile(name, function(error, data) {
+        getOutline: function(scope, name) {
+            var result = [];
+            if (!name) return;
+            name = name.toLowerCase()
+
+            client.readFile(name, function(error, rawData) {
                 if (error) {
-                    console.log('[ERROR] getting file');
+                    outlineData = [];
+                    // if we are connected to dropbox, send an event so it
+                    // is known that the file couldn't be fetched
+                    if (client && client.isAuthenticated()) {
+                        scope.$emit('dropboxGotOutline');
+                    }
+                    return false;
+                }
+                outlineData = JSON.parse(rawData);
+                scope.$emit('dropboxGotOutline');
+            });
+            return true;
+        },
+        getOutlineData: function() {
+            return outlineData;
+        },
+        putOutline: function(name, data) {
+            if (!name) return;
+            name = name.toLowerCase();
+            var dropboxData = JSON.stringify(data);
+            client.writeFile(name, dropboxData, function(error, stat) {
+                if (error) {
+                    console.log('[ERROR] writing file');
                     console.log(error);
                     return false;
                 }
-                console.log(data);
-                return [{str:'from dropbox',ind:0}];
+                return true;
             });
         }
     };
