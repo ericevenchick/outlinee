@@ -4,7 +4,7 @@ outlinear.controller('OutlineCtrl',
                      function outlineCtrl($scope,
                                           localStorageService,
                                           dropboxService,
-                                          $location)
+                                          $location, $window)
 {
     // constants
     var INDENT_SIZE = 40;
@@ -17,6 +17,7 @@ outlinear.controller('OutlineCtrl',
     // copy version to scope so it can be displayed
     $scope.version = VERSION;
 
+    
     // use path to get outline name
     // TODO: this could use real routing rather than substr
     var pathTitle = $location.path().substr(1);
@@ -38,10 +39,22 @@ outlinear.controller('OutlineCtrl',
             $scope.content &&
             $scope.content.length > 0 &&
             $scope.content[0].str != '') {
-            localStorageService.put($scope.outlineTitle, $scope.content);
-            dropboxService.putOutline($scope.outlineTitle, $scope.content);
-        }
+                localStorageService.put($scope.outlineTitle, $scope.content);
+                //dropboxService.putOutline($scope.outlineTitle, $scope.content);
+            }
+
     }, true);
+    // when an item is blured, save to dropbox
+    $scope.$on('outlineItemBlur', function() {
+        dropboxService.putOutline($scope.outlineTitle, $scope.content);
+        $scope.$apply();
+    });
+
+    // save when leaving page
+    $window.onbeforeunload = function() {
+        dropboxService.putOutline($scope.outlineTitle, $scope.content);
+        $scope.$apply();
+    }
 
     // watch for title changes, load on change
     $scope.$watch('outlineTitle', function() {
