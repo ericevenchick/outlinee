@@ -61,11 +61,13 @@ html {
 /* link styles */
 a {
     color: #444;
-    text-decoration: none;
-    border-bottom: 1px solid;
 }
 
 /* header styles */
+.page-header {
+    color: #444;
+}
+
 .page-header a {
     color: #444;
     text-decoration: none;
@@ -86,7 +88,6 @@ a {
 
 .go-back a {
     text-decoration: none;
-    border: none;
     line-height: 12px;
 }
 
