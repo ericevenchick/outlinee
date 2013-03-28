@@ -42,7 +42,7 @@
 
     <section class='outline-content'>
     <ul class='outline-list'>
-      <li ng-repeat='line in content' style={{styleForLine(line)}}>
+      <li ng-repeat='line in outline.data' style={{styleForLine(line)}}>
       <div
         contenteditable
         ng-model='line' ol-standard-input-keybindings

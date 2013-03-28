@@ -9,12 +9,11 @@ ol.controller('OutlineCtrl',
     // constants
     var INDENT_SIZE = 40;
     var MAX_INDENT = 30;
-    var BLANK_OUTLINE = [{str:'', ind:0}];
+    var BLANK_OUTLINE = {data:[{str:'', ind:0}]};
 
     // copy version to scope so it can be displayed
     $scope.version = VERSION;
 
-    
     // use path to get outline name
     // TODO: this could use real routing rather than substr
     var pathTitle = $location.path().substr(1);
@@ -33,22 +32,22 @@ ol.controller('OutlineCtrl',
     $scope.$watch('content', function() {
         // only save if the title is defined and if there is content
         if ($scope.outlineTitle &&
-            $scope.content &&
-            $scope.content.length > 0 &&
-            $scope.content[0].str != '') {
-                localStorageService.put($scope.outlineTitle, $scope.content);
-                //dropboxService.putOutline($scope.outlineTitle, $scope.content);
+            $scope.outline.data &&
+            $scope.outline.data.length > 0 &&
+            $scope.outline.data[0].str != '') {
+                localStorageService.put($scope.outlineTitle,
+                                        $scope.outline);
             }
 
     }, true);
     // when an item is blured, save to dropbox
     $scope.$on('outlineItemBlur', function() {
-        dropboxService.putOutline($scope.outlineTitle, $scope.content);
+        dropboxService.putOutline($scope.outlineTitle, $scope.outline);
     });
 
     // save when leaving page
     $window.onbeforeunload = function() {
-        dropboxService.putOutline($scope.outlineTitle, $scope.content);
+        dropboxService.putOutline($scope.outlineTitle, $scope.outline);
     }
 
     // watch for title changes, load on change
@@ -61,21 +60,22 @@ ol.controller('OutlineCtrl',
             var loaded = localStorageService.get($scope.outlineTitle);
             // if there's data to load, load it
             // if not, create a single element (new outline)
-            if (loaded && loaded.length > 0) {
-                $scope.content = loaded;
+            if (loaded && loaded.data) {
+                $scope.outline.data = loaded;
             } else {
-                $scope.content = BLANK_OUTLINE
+                $scope.outline = BLANK_OUTLINE
             }
+            console.log($scope.outline);
         }
     });
 
     // put data into outline when it's fetched from dropbox
     $scope.$on('dropboxGotOutline', function() {
         var loaded = dropboxService.getOutlineData();
-        if (loaded && loaded.length > 0) {
-            $scope.content = loaded;
+        if (loaded && loaded.data) {
+            $scope.outline = loaded;
         } else {
-            $scope.content = BLANK_OUTLINE;
+            $scope.outline = BLANK_OUTLINE;
         }
         $scope.$apply();
     });
@@ -107,7 +107,7 @@ ol.controller('OutlineCtrl',
         var index = $scope.getInputIndex(el);
 
         // not possible if last
-        if (index == $scope.content.length - 1) return;
+        if (index == $scope.outline.data.length - 1) return;
 
         $('ul li:nth-child(' + (index + 2) + ')').find('div').focus();
     }
@@ -140,15 +140,15 @@ ol.controller('OutlineCtrl',
         // first line must be level 0
         if (index == 0) indent = 0;
         // ensure that indent is no more than 1 greater than previous line
-        if (index > 0 && indent > ($scope.content[index - 1].ind + 1)) {
+        if (index > 0 && indent > ($scope.outline.data[index - 1].ind + 1)) {
             return;
         }
 
         // get the current indent level
-        var curIndent = $scope.content[index].ind;
+        var curIndent = $scope.outline.data[index].ind;
 
         // set the new indent level
-        $scope.content[index].ind = indent;
+        $scope.outline.data[index].ind = indent;
         // update the view
         $scope.$apply();
     }
@@ -156,19 +156,19 @@ ol.controller('OutlineCtrl',
     // increase line's indent level by 1
     $scope.increaseIndent = function(el) {
         var index = $scope.getInputIndex(el);
-        $scope.setIndent(el, $scope.content[index].ind + 1);
+        $scope.setIndent(el, $scope.outline.data[index].ind + 1);
     }
 
     // decrease line's indent level by 1
     $scope.decreaseIndent = function(el) {
         var index = $scope.getInputIndex(el);
-        $scope.setIndent(el, $scope.content[index].ind - 1);
+        $scope.setIndent(el, $scope.outline.data[index].ind - 1);
     }
 
     // set strikethrough property of the line
     $scope.toggleStrike = function(el, value) {
         var index = $scope.getInputIndex(el);
-        $scope.content[index].strike = !($scope.content[index].strike);
+        $scope.outline.data[index].strike = !($scope.outline.data[index].strike);
         $scope.$apply();
     }
 
@@ -176,7 +176,7 @@ ol.controller('OutlineCtrl',
     $scope.insertLineAfter = function(el) {
         var index = $scope.getInputIndex(el);
         // add an element after the current one
-        $scope.content.splice(index + 1, 0, {
+        $scope.outline.data.splice(index + 1, 0, {
             str: '',
             ind:0
         });
@@ -185,7 +185,7 @@ ol.controller('OutlineCtrl',
         // set the indent to the current element's indent
         // need to pass input element, which is the only child of the next li
         $scope.setIndent($(el).parent().next().children(),
-                         $scope.content[index].ind);
+                         $scope.outline.data[index].ind);
     }
 
     // move a line up one position
@@ -196,35 +196,37 @@ ol.controller('OutlineCtrl',
         if (index == 0) return;
 
         // prevent moving if element above is of lower indent level
-        if ($scope.content[index-1].ind < $scope.content[index].ind) return;
+        if ($scope.outline.data[index-1].ind <
+            $scope.outline.data[index].ind) return;
 
         // get number of elements to move, which is this element plus number
         // of child elements
         var numElements = 1;
-        while (($scope.content[index + numElements]) &&
-               ($scope.content[index + numElements].ind >
-                $scope.content[index].ind))
+        while (($scope.outline.data[index + numElements]) &&
+               ($scope.outline.data[index + numElements].ind >
+                $scope.outline.data[index].ind))
         {
             numElements = numElements + 1;
         }
         // number ofchildren of previous element,
         // skip over these when inserting
         var numSkip = 1;
-        while (($scope.content[index - numSkip]) &&
-               ($scope.content[index - numSkip].ind >
-                $scope.content[index].ind))
+        while (($scope.outline.data[index - numSkip]) &&
+               ($scope.outline.data[index - numSkip].ind >
+                $scope.outline.data[index].ind))
         {
             numSkip = numSkip + 1;
         }
 
         // prevent moving if element above is of lower indent level
-        if ($scope.content[index-1].ind < $scope.content[index].ind) return;
+        if ($scope.outline.data[index-1].ind <
+            $scope.outline.data[index].ind) return;
 
 
         // perform move
-        var temp = $scope.content.splice(index, numElements);
+        var temp = $scope.outline.data.splice(index, numElements);
         for (var i = 0; i < temp.length; i++) {
-            $scope.content.splice(index - numSkip + i, 0, temp[i]);
+            $scope.outline.data.splice(index - numSkip + i, 0, temp[i]);
         }
         $scope.$apply();
 
@@ -237,37 +239,37 @@ ol.controller('OutlineCtrl',
         var index = $scope.getInputIndex(el);
 
         // not possible if last element
-        if (index == ($scope.content.length - 1)) return;
+        if (index == ($scope.outline.data.length - 1)) return;
 
         // get number of elements to move, which is this element plus number
         // of child elements
         var numElements = 1;
-        while (($scope.content[index + numElements]) &&
-               ($scope.content[index + numElements].ind >
-                $scope.content[index].ind))
+        while (($scope.outline.data[index + numElements]) &&
+               ($scope.outline.data[index + numElements].ind >
+                $scope.outline.data[index].ind))
         {
             numElements = numElements + 1;
         }
         // number of children of next element,
         // skip over these when inserting
         var numSkip = 1;
-        while (($scope.content[index + numElements + numSkip]) &&
-               ($scope.content[index + numElements + numSkip].ind >
-                $scope.content[index].ind))
+        while (($scope.outline.data[index + numElements + numSkip]) &&
+               ($scope.outline.data[index + numElements + numSkip].ind >
+                $scope.outline.data[index].ind))
         {
             numSkip = numSkip + 1;
         }
 
         // prevent moving if element below group is of lower indent level
-        if ($scope.content[index+numElements] &&
-            $scope.content[index+numElements].ind <
-            $scope.content[index].ind) return;
+        if ($scope.outline.data[index+numElements] &&
+            $scope.outline.data[index+numElements].ind <
+            $scope.outline.data[index].ind) return;
 
 
         // perform move
-        var temp = $scope.content.splice(index, numElements);
+        var temp = $scope.outline.data.splice(index, numElements);
         for (var i = 0; i < temp.length; i++) {
-            $scope.content.splice(index + numSkip + i, 0, temp[i]);
+            $scope.outline.data.splice(index + numSkip + i, 0, temp[i]);
         }
 
         $scope.$apply();
@@ -279,11 +281,11 @@ ol.controller('OutlineCtrl',
     // delete a line given its input element
     $scope.deleteLine = function(el) {
         // only allow a delete if there's more than one line left!
-        if ($scope.content.length < 2)
+        if ($scope.outline.data.length < 2)
             return;
 
         var index = $scope.getInputIndex(el);
-        $scope.content.remove(index);
+        $scope.outline.data.remove(index);
         // choose element to focus before view gets updates
         // otherwise we can't find it
         if (index > 0)
