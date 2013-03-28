@@ -1,4 +1,4 @@
-outlinear.service('dropboxService', function() {
+ol.service('dropboxService', function() {
     var client;
     var outlineData = [];
     return {

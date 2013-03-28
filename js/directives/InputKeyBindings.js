@@ -1,4 +1,4 @@
-var keyBindingDirective = angular.module('outlinear.keyBindingDirective', [])
+var keyBindingDirective = angular.module('ol.keyBindingDirective', [])
 
 /*
  * Handles key presses for input elements

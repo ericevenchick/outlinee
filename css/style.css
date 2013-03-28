@@ -30,11 +30,14 @@ html {
     width: 100%;
     margin-top: 3px;
     margin-bottom: 3px;
+    border-left: 2px solid #aaa;
+    padding-left: 3px;
 }
 .outline-list div:hover {
     outline: 2px solid #eee;
 }
 .outline-list div:focus {
+    border:none;
     outline: 2px solid #bbb;
 }
 

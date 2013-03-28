@@ -1,7 +1,7 @@
 'use strict';
 
 var contentEditableDirective =
-    angular.module('outlinear.contentEditableDirective',
+    angular.module('ol.contentEditableDirective',
     []);
 
 keyBindingDirective.directive('contenteditable', function() {

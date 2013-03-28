@@ -2,8 +2,8 @@
 
 
 // provides local storage for outlines
-outlinear.factory('localStorageService', function() {
-    var STORAGE_ID_PREFIX = 'outlinear-';
+ol.factory('localStorageService', function() {
+    var STORAGE_ID_PREFIX = 'ol-';
     return {
         get: function(name) {
             if (!name) return;
@@ -26,7 +26,7 @@ outlinear.factory('localStorageService', function() {
             for (var key in localStorage) {
                 var keySplit = key.split('-')
                 // check that key is an outline
-                if (keySplit[0] == "outlinear") {
+                if (keySplit[0] == "ol") {
                     keys.push(keySplit[1]);
                 }
             }

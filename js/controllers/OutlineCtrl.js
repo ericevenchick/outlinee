@@ -1,6 +1,6 @@
 'use strict';
 
-outlinear.controller('OutlineCtrl',
+ol.controller('OutlineCtrl',
                      function outlineCtrl($scope,
                                           localStorageService,
                                           dropboxService,
@@ -9,10 +9,7 @@ outlinear.controller('OutlineCtrl',
     // constants
     var INDENT_SIZE = 40;
     var MAX_INDENT = 30;
-    var BLANK_OUTLINE = [{str:'start here...', ind:0}];
-
-    // start with a blank outline
-    $scope.content = BLANK_OUTLINE;
+    var BLANK_OUTLINE = [{str:'', ind:0}];
 
     // copy version to scope so it can be displayed
     $scope.version = VERSION;
@@ -47,13 +44,11 @@ outlinear.controller('OutlineCtrl',
     // when an item is blured, save to dropbox
     $scope.$on('outlineItemBlur', function() {
         dropboxService.putOutline($scope.outlineTitle, $scope.content);
-        $scope.$apply();
     });
 
     // save when leaving page
     $window.onbeforeunload = function() {
         dropboxService.putOutline($scope.outlineTitle, $scope.content);
-        $scope.$apply();
     }
 
     // watch for title changes, load on change
@@ -86,8 +81,8 @@ outlinear.controller('OutlineCtrl',
     });
     // create a title for the page
     $scope.pageTitle = function() {
-        return $scope.outlineTitle ? ($scope.outlineTitle + ' | outlinear') :
-                                     ('outlinear');
+        return $scope.outlineTitle ? ($scope.outlineTitle + ' | outlinee') :
+                                     ('outlinee');
     }
 
     // create a style for each line

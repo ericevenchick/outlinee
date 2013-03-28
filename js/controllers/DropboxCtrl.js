@@ -1,6 +1,6 @@
 'use strict';
 
-outlinear.controller('DropboxCtrl',
+ol.controller('DropboxCtrl',
                      function dropboxCtrl($scope,
                                           dropboxService) {
     $scope.dropboxConnected = false;

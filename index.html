@@ -1,8 +1,8 @@
 <!doctype html>
-<html ng-app='outlinear' ng-controller='OutlineCtrl'>
+<html ng-app='ol' ng-controller='OutlineCtrl'>
 
   <head>
-    <title ng:bind-template='{{pageTitle()}}'>outlinear</title>
+    <title ng:bind-template='{{pageTitle()}}'>outlinee</title>
     <link rel='stylesheet' href='css/style.css'>
     <link rel='stylesheet' href='css/libs/jquery-ui-min.css'>
     <script src='js/libs/jquery.min.js'></script>
@@ -24,7 +24,7 @@
 
   <body>
     <div class='page-header' style="float:right">
-      <span>outlinear v{{version}} | </span>
+      <span>outlinee v{{version}} | </span>
       <span><a href='about.html'>about</a> | </span>
       <span ng-controller='DropboxCtrl'>
         <a href="#" ng-click='dropboxConnect()' ng-hide='dropboxConnected'>

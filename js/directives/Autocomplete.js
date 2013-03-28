@@ -1,7 +1,7 @@
 'use strict';
 
 var titleAutocompleteDirective =
-    angular.module('outlinear.titleAutocompleteDirective',
+    angular.module('ol.titleAutocompleteDirective',
     []);
 
 titleAutocompleteDirective.directive('olTitleAutocomplete', function() {

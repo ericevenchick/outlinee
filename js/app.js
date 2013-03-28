@@ -9,13 +9,13 @@ Array.prototype.remove = function(from, to) {
   return this.push.apply(this, rest);
 };
 
-var outlinear = angular.module('outlinear',
-                              ['outlinear.keyBindingDirective',
-                               'outlinear.contentEditableDirective',
-                               'outlinear.titleAutocompleteDirective']);
+var ol = angular.module('ol',
+                        ['ol.keyBindingDirective',
+                         'ol.contentEditableDirective',
+                         'ol.titleAutocompleteDirective']);
 
 // routing
-outlinear.config(['$routeProvider', '$locationProvider',
+ol.config(['$routeProvider', '$locationProvider',
     function($routeProvider, $locationProvider, OutlineCtrl) {
         $locationProvider.html5Mode(false);
         $routeProvider.when(':id', {controller: 'OutlineCtrl'});
