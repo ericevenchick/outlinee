@@ -40,21 +40,21 @@ html {
 
 /* styles for line indentation levels */
 .level1 {
-    height: 22px;
+    min-height: 22px;
     font-size: 20px;
     padding: 4px;
 }
 .level2 {
-    height: 20px;
+    min-height: 20px;
     font-size: 18px;
     padding: 2px;
 }
 .level3 {
-    height: 18px;
+    min-height: 18px;
     font-size: 16px;
 }
 .level4 {
-    height: 16px;
+    min-height: 16px;
     font-size: 14px;
 }
 
