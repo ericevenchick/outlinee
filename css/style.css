@@ -57,3 +57,41 @@ html {
     height: 16px;
     font-size: 14px;
 }
+
+/* link styles */
+a {
+    color: #444;
+    text-decoration: none;
+    border-bottom: 1px solid;
+}
+
+/* header styles */
+.page-header a {
+    color: #444;
+    text-decoration: none;
+    border: none;
+}
+
+.header-connected {
+    color: #449944;
+}
+
+/* about page styles */
+.about {
+    max-width: 500px;
+}
+.about ul {
+    list-style: none;
+}
+
+.go-back a {
+    text-decoration: none;
+    border: none;
+    line-height: 12px;
+}
+
+.go-back span {
+    font-size: 32px;
+}
+
+

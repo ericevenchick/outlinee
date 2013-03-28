@@ -1,5 +1,7 @@
 'use strict';
 
+var VERSION = '1.0';
+
 // Array Remove - By John Resig (MIT Licensed)
 Array.prototype.remove = function(from, to) {
   var rest = this.slice((to || from) + 1 || this.length);

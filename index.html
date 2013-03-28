@@ -21,13 +21,14 @@
   </head>
 
   <body>
-    <div id='page-header' style="float:right">
-      <span>about | </span>
+    <div class='page-header' style="float:right">
+      <span>outlinear v{{version}} | </span>
+      <span><a href='about.html'>about</a> | </span>
       <span ng-controller='DropboxCtrl'>
         <a href="#" ng-click='dropboxConnect()' ng-hide='dropboxConnected'>
-          login
+          login with Dropbox
         </a>
-        <span ng-show='dropboxConnected'>connected</a>
+        <span class='header-connected' ng-show='dropboxConnected'>connected</a>
       </span>
     </div>
     <header class='outline-header'>
