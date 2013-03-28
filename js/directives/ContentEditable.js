@@ -27,6 +27,11 @@ keyBindingDirective.directive('contenteditable', function() {
             function read() {
                 ngModel.$modelValue.str = element.html();
             }
+
+            // event to cause save when bluring
+            element.bind('blur', function() {
+                scope.$emit('outlineItemBlur');
+            });
         }
     };
 });

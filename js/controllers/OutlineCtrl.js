@@ -2,20 +2,30 @@
 
 outlinear.controller('OutlineCtrl',
                      function outlineCtrl($scope,
-                                          outlineLocalStorage,
+                                          localStorageService,
+                                          dropboxService,
                                           $location)
 {
     // constants
     var INDENT_SIZE = 40;
     var MAX_INDENT = 30;
 
+    // copy version to scope so it can be displayed
+    $scope.version = VERSION;
+
     // use path to get outline name
     // TODO: this could use real routing rather than substr
     var pathTitle = $location.path().substr(1);
     $scope.outlineTitle = pathTitle ? pathTitle : '';
 
-    // get the names of all the outlines
-    $scope.outlineTitleList = outlineLocalStorage.getOutlines();
+    // get the names of all the outlines in local storage
+    $scope.outlineTitleList = localStorageService.getOutlines();
+    // grab the outlines from dropbox
+    $scope.$on('dropboxConnected', function() {
+        if (dropboxService.isAuthenticated()) {
+            $scope.outlineTitleList = dropboxService.getList();
+        }
+    });
 
     // watch for content changes, save on change
     $scope.$watch('content', function() {
@@ -24,23 +34,43 @@ outlinear.controller('OutlineCtrl',
             $scope.content &&
             $scope.content.length > 0 &&
             $scope.content[0].str != '') {
-
-            outlineLocalStorage.put($scope.outlineTitle, $scope.content);
+            localStorageService.put($scope.outlineTitle, $scope.content);
         }
     }, true);
 
+    // write to dropbox when leaving an outline item
+    $scope.$on('outlineItemBlur', function() {
+        dropboxService.putOutline($scope.outlineTitle, $scope.content);
+    });
+
     // watch for title changes, load on change
     $scope.$watch('outlineTitle', function() {
-        var loaded = outlineLocalStorage.get($scope.outlineTitle);
-        // if there's data to load, load it
-        // if not, create a single element (new outline)
-        if (loaded && loaded.length > 0) {
-            $scope.content = loaded;
-        } else {
-            $scope.content = [{str:'...', ind:0}];
+        // start fetching from dropbox
+        dropboxService.getOutline($scope, $scope.outlineTitle);
+
+        // load from localStorage if not connected to dropbox
+        if (!dropboxService.isAuthenticated()) {
+            var loaded = localStorageService.get($scope.outlineTitle);
+            // if there's data to load, load it
+            // if not, create a single element (new outline)
+            if (loaded && loaded.length > 0) {
+                $scope.content = loaded;
+            } else {
+                $scope.content = [{str:'', ind:0}];
+            }
         }
     });
 
+    // put data into outline when it's fetched from dropbox
+    $scope.$on('dropboxGotOutline', function() {
+        var loaded = dropboxService.getOutlineData();
+        if (loaded && loaded.length > 0) {
+            $scope.content = loaded;
+        } else {
+            $scope.content = [{str:'', ind:0}];
+        }
+        $scope.$apply();
+    });
     // create a title for the page
     $scope.pageTitle = function() {
         return $scope.outlineTitle ? ($scope.outlineTitle + ' | outlinear') :
@@ -258,4 +288,5 @@ outlinear.controller('OutlineCtrl',
         // apply focus
         toFocus.focus();
     }
+
 })

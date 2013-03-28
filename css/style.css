@@ -5,6 +5,10 @@ html {
 }
 
 /* styles for title box */
+.outline-header {
+    width: 100%;
+}
+
 .outline-header input {
     font-size: 25px;
     font-weight: bold;
@@ -12,10 +16,6 @@ html {
     width:100%;
 }
 .outline-header input:hover {
-    font-size: 25px;
-    font-weight: bold;
-    border:none;
-    width:100%;
     outline: 2px solid #eee;
 }
 
@@ -57,3 +57,42 @@ html {
     height: 16px;
     font-size: 14px;
 }
+
+/* link styles */
+a {
+    color: #444;
+}
+
+/* header styles */
+.page-header {
+    color: #444;
+}
+
+.page-header a {
+    color: #444;
+    text-decoration: none;
+    border: none;
+}
+
+.header-connected {
+    color: #449944;
+}
+
+/* about page styles */
+.about {
+    max-width: 500px;
+}
+.about ul {
+    list-style: none;
+}
+
+.go-back a {
+    text-decoration: none;
+    line-height: 12px;
+}
+
+.go-back span {
+    font-size: 32px;
+}
+
+
