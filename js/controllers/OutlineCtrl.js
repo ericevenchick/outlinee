@@ -9,6 +9,10 @@ outlinear.controller('OutlineCtrl',
     // constants
     var INDENT_SIZE = 40;
     var MAX_INDENT = 30;
+    var BLANK_OUTLINE = [{str:'start here...', ind:0}];
+
+    // start with a blank outline
+    $scope.content = BLANK_OUTLINE;
 
     // copy version to scope so it can be displayed
     $scope.version = VERSION;
@@ -35,13 +39,9 @@ outlinear.controller('OutlineCtrl',
             $scope.content.length > 0 &&
             $scope.content[0].str != '') {
             localStorageService.put($scope.outlineTitle, $scope.content);
+            dropboxService.putOutline($scope.outlineTitle, $scope.content);
         }
     }, true);
-
-    // write to dropbox when leaving an outline item
-    $scope.$on('outlineItemBlur', function() {
-        dropboxService.putOutline($scope.outlineTitle, $scope.content);
-    });
 
     // watch for title changes, load on change
     $scope.$watch('outlineTitle', function() {
@@ -56,7 +56,7 @@ outlinear.controller('OutlineCtrl',
             if (loaded && loaded.length > 0) {
                 $scope.content = loaded;
             } else {
-                $scope.content = [{str:'', ind:0}];
+                $scope.content = BLANK_OUTLINE
             }
         }
     });
@@ -67,7 +67,7 @@ outlinear.controller('OutlineCtrl',
         if (loaded && loaded.length > 0) {
             $scope.content = loaded;
         } else {
-            $scope.content = [{str:'', ind:0}];
+            $scope.content = BLANK_OUTLINE;
         }
         $scope.$apply();
     });
