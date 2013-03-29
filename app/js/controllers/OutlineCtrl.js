@@ -13,6 +13,8 @@ ol.controller('OutlineCtrl',
 
     // copy version to scope so it can be displayed
     $scope.version = VERSION;
+    // assume not modified on start
+    $scope.modified = false;
 
     // use path to get outline name
     // TODO: this could use real routing rather than substr
@@ -25,11 +27,15 @@ ol.controller('OutlineCtrl',
     $scope.$on('dropboxConnected', function() {
         if (dropboxService.isAuthenticated()) {
             $scope.outlineTitleList = dropboxService.getList();
+            // also create the folder for outlines here, since it may not exist
+            dropboxService.mkdir('json');
         }
     });
 
     // watch for content changes, save on change
-    $scope.$watch('content', function() {
+    $scope.$watch('outline.data', function() {
+        // mark that the outline has been modified
+        $scope.modified = true;
         // only save if the title is defined and if there is content
         if ($scope.outlineTitle &&
             $scope.outline.data &&
@@ -38,16 +44,23 @@ ol.controller('OutlineCtrl',
                 localStorageService.put($scope.outlineTitle,
                                         $scope.outline);
             }
-
     }, true);
     // when an item is blured, save to dropbox
     $scope.$on('outlineItemBlur', function() {
-        dropboxService.putOutline($scope.outlineTitle, $scope.outline);
+        // only save if modified
+        if ($scope.modified && $scope.outline.data[0].str != '') {
+            dropboxService.putOutline($scope.outlineTitle, $scope.outline);
+            // mark outline as saved
+            $scope.modified = false;
+        }
     });
 
     // save when leaving page
     $window.onbeforeunload = function() {
-        dropboxService.putOutline($scope.outlineTitle, $scope.outline);
+        // only save if modified, and there's content
+        if ($scope.modified && $scope.outline.data[0].str != '') {
+            dropboxService.putOutline($scope.outlineTitle, $scope.outline);
+        }
     }
 
     // watch for title changes, load on change
