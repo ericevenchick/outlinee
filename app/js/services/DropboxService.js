@@ -38,11 +38,19 @@ ol.service('dropboxService', function() {
         isAuthenticated: function() {
             return client && client.isAuthenticated();
         },
+        mkdir: function(name) {
+            if (!client || !client.isAuthenticated()) return;
+            client.mkdir(name, function(error, stat) {
+                // ignore errors, since directory could already exist
+                if (error) return false;
+                return true;
+            });
+        },
         getList: function() {
             var result = [];
             if (!client || !client.isAuthenticated()) return false;
 
-            client.readdir("/", function(error, entries, dir_stat, entry_stats) {
+            client.readdir("/json", function(error, entries, dir_stat, entry_stats) {
                 if (error) {
                     console.log('[ERROR] getting entry list from Dropbox');
                     console.log(error);
@@ -60,6 +68,8 @@ ol.service('dropboxService', function() {
             var result = [];
             if (!name) return;
             name = name.toLowerCase()
+            // get outlines from json directory
+            name = 'json/' + name;
 
             client.readFile(name, function(error, rawData) {
                 if (error) {
@@ -82,6 +92,8 @@ ol.service('dropboxService', function() {
         putOutline: function(name, data) {
             if (!name) return;
             name = name.toLowerCase();
+            // store outlines in json directory
+            name = 'json/' + name;
             var dropboxData = JSON.stringify(data);
             client.writeFile(name, dropboxData, function(error, stat) {
                 if (error) {
