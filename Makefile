@@ -46,6 +46,6 @@ clean:
 	-rm -rf build
 
 deploy:
-	s3cmd -P --guess-mime-type sync app/. s3://outlinee.com
+	s3cmd -P --guess-mime-type sync build/. s3://outlinee.com
 
 .PHONY: clean web deploy css
