@@ -49,7 +49,8 @@ ol.controller('OutlineCtrl',
     $scope.$on('outlineItemBlur', function() {
         // only save if modified
         if ($scope.modified && $scope.outline.data[0].str != '') {
-            dropboxService.putOutline($scope.outlineTitle, $scope.outline);
+            dropboxService.putOutline($scope.outlineTitle + '.json',
+                $scope.outline);
             // mark outline as saved
             $scope.modified = false;
         }
@@ -59,7 +60,8 @@ ol.controller('OutlineCtrl',
     $window.onbeforeunload = function() {
         // only save if modified, and there's content
         if ($scope.modified && $scope.outline.data[0].str != '') {
-            dropboxService.putOutline($scope.outlineTitle, $scope.outline);
+            dropboxService.putOutline($scope.outlineTitle + '.json',
+                $scope.outline);
         }
     }
 
@@ -70,7 +72,7 @@ ol.controller('OutlineCtrl',
             // start fetching from dropbox if the outline exists
             // FIXME: not IE safe, define indexOf manually?
             if ($scope.outlineTitleList.indexOf($scope.outlineTitle) >=0) {
-                dropboxService.getOutline($scope, $scope.outlineTitle);
+                dropboxService.getOutline($scope, $scope.outlineTitle + '.json');
             }
         } else {
             // load from localStorage if not connected to dropbox

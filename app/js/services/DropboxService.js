@@ -59,7 +59,9 @@ ol.service('dropboxService', function() {
                 // copy entries into result array
                 // TODO: could this be simpler?
                 for (var i=0; i < entries.length; i++) {
-                    result.push(entries[i]);
+                    // remove '.json' from name
+                    var name = entries[i].substr(0, entries[i].length-5)
+                    result.push(name);
                 }
             });
             return result;
