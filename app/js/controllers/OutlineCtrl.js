@@ -90,8 +90,6 @@ ol.controller('OutlineCtrl',
         var loaded = dropboxService.getOutlineData();
         if (loaded && loaded.data) {
             $scope.outline = loaded;
-        } else {
-            $scope.outline = BLANK_OUTLINE;
         }
         $scope.$apply();
     });
