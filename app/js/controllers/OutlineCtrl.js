@@ -65,20 +65,23 @@ ol.controller('OutlineCtrl',
 
     // watch for title changes, load on change
     $scope.$watch('outlineTitle', function() {
-        // start fetching from dropbox
-        dropboxService.getOutline($scope, $scope.outlineTitle);
-
-        // load from localStorage if not connected to dropbox
-        if (!dropboxService.isAuthenticated()) {
-            var loaded = localStorageService.get($scope.outlineTitle);
-            // if there's data to load, load it
-            // if not, create a single element (new outline)
-            if (loaded && loaded.data) {
-                $scope.outline.data = loaded;
-            } else {
-                $scope.outline = BLANK_OUTLINE
+        var loaded = false;
+        if (dropboxService.isAuthenticated()) {
+            // start fetching from dropbox if the outline exists
+            // FIXME: not IE safe, define indexOf manually?
+            if ($scope.outlineTitleList.indexOf($scope.outlineTitle) >=0) {
+                dropboxService.getOutline($scope, $scope.outlineTitle);
             }
-            console.log($scope.outline);
+        } else {
+            // load from localStorage if not connected to dropbox
+            loaded = localStorageService.get($scope.outlineTitle);
+        }
+        // if there's data to load, load it
+        // if not, create a single element (new outline)
+        if (loaded && loaded.data) {
+            $scope.outline.data = loaded;
+        } else {
+            $scope.outline = BLANK_OUTLINE
         }
     });
 
