@@ -1,14 +1,15 @@
-'use strict';
-
 var contentEditableDirective =
     angular.module('ol.contentEditableDirective',
     []);
 
-keyBindingDirective.directive('contenteditable', function() {
+contentEditableDirective.directive('contenteditable', function() {
+    'use strict';
     return {
         require: '?ngModel',
         link: function(scope, element, attrs, ngModel) {
-            if (!ngModel) return;
+            if (!ngModel) {
+                return;
+            }
 
             // update the view
             ngModel.$render = function() {
@@ -18,7 +19,9 @@ keyBindingDirective.directive('contenteditable', function() {
             // update the model
             element.bind('blur changed keydown', function() {
                 read();
-                if (!scope.$$phase) scope.$apply();
+                if (!scope.$$phase) {
+                    scope.$apply();
+                }
             });
             // initialize
             read();

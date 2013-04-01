@@ -1,11 +1,12 @@
-var keyBindingDirective = angular.module('ol.keyBindingDirective', [])
+var keyBindingDirective = angular.module('ol.keyBindingDirective', []);
 
 /*
  * Handles key presses for input elements
  */
 
 keyBindingDirective.directive('olStandardInputKeybindings', function() {
-    return function(scope, el, attr) {
+    'use strict';
+    return function(scope, el) {
         el.bind('keydown', function(e) {
             // CTRL key commands
             if (e.ctrlKey) {
@@ -30,7 +31,7 @@ keyBindingDirective.directive('olStandardInputKeybindings', function() {
 
             switch (e.keyCode) {
                 case 40: // down
-                    e.preventDefault()
+                    e.preventDefault();
                     scope.focusNext(el);
                     break;
                 case 38: // up
@@ -39,10 +40,11 @@ keyBindingDirective.directive('olStandardInputKeybindings', function() {
                     break;
                 case 9: // tab: change indent
                     e.preventDefault();
-                    if (e.shiftKey)
+                    if (e.shiftKey) {
                         scope.decreaseIndent(el);
-                    else
+                    } else {
                         scope.increaseIndent(el);
+                    }
                     break;
                 case 13: // enter: create new line
                     e.preventDefault();
@@ -55,13 +57,14 @@ keyBindingDirective.directive('olStandardInputKeybindings', function() {
                     break;
             }
         });
-    }
+    };
 });
 
 
 keyBindingDirective.directive('olVimInputKeybindings', function() {
+    'use strict';
     var insert_mode = false;
-    return function(scope, el, attr) {
+    return function(scope, el) {
         el.bind('keydown', function(e) {
             // special case when CTRL is pressed
             // avoids preventing default browser behaviour
@@ -70,7 +73,7 @@ keyBindingDirective.directive('olVimInputKeybindings', function() {
             }
             switch (e.keyCode) {
                 case 40: // down
-                    e.preventDefault()
+                    e.preventDefault();
                     scope.focusNext(el);
                     break;
                 case 38: // up
@@ -79,16 +82,17 @@ keyBindingDirective.directive('olVimInputKeybindings', function() {
                     break;
                 case 9: // tab: change indent
                     e.preventDefault();
-                    if (e.shiftKey)
+                    if (e.shiftKey) {
                         scope.decreaseIndent(el);
-                    else
+                    } else {
                         scope.increaseIndent(el);
+                    }
                     break;
 
                 case 73: // i: enter insert mode
                     // move to insert mode if we're not in it
                     if (!insert_mode) {
-                        e.preventDefault()
+                        e.preventDefault();
                         insert_mode = true;
                     }
                     break;
@@ -110,7 +114,5 @@ keyBindingDirective.directive('olVimInputKeybindings', function() {
                 }
             }
         });
-   }
+   };
 });
-
-

@@ -19,4 +19,5 @@ ol.config(['$routeProvider', '$locationProvider',
     function($routeProvider, $locationProvider, OutlineCtrl) {
         $locationProvider.html5Mode(false);
         $routeProvider.when(':id', {controller: 'OutlineCtrl'});
-    }]);
+    }]
+);

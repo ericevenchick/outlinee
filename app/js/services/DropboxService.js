@@ -1,4 +1,5 @@
 ol.service('dropboxService', function() {
+    'use strict';
     var client;
     var outlineData = [];
     return {
@@ -21,7 +22,9 @@ ol.service('dropboxService', function() {
                 });
         },
         auth: function(scope) {
-            if (client && client.isAuthenticated()) return;
+            if (client && client.isAuthenticated()) {
+                return;
+            }
 
             client.authenticate(function(error, authClient) {
                 if (error) {
@@ -39,18 +42,24 @@ ol.service('dropboxService', function() {
             return client && client.isAuthenticated();
         },
         mkdir: function(name) {
-            if (!client || !client.isAuthenticated()) return;
-            client.mkdir(name, function(error, stat) {
+            if (!client || !client.isAuthenticated()) {
+                return;
+            }
+            client.mkdir(name, function(error) {
                 // ignore errors, since directory could already exist
-                if (error) return false;
+                if (error) {
+                    return false;
+                }
                 return true;
             });
         },
         getList: function() {
             var result = [];
-            if (!client || !client.isAuthenticated()) return false;
+            if (!client || !client.isAuthenticated()) {
+                return false;
+            }
 
-            client.readdir("/json", function(error, entries, dir_stat, entry_stats) {
+            client.readdir("/json", function(error, entries) {
                 if (error) {
                     console.log('[ERROR] getting entry list from Dropbox');
                     console.log(error);
@@ -60,16 +69,17 @@ ol.service('dropboxService', function() {
                 // TODO: could this be simpler?
                 for (var i=0; i < entries.length; i++) {
                     // remove '.json' from name
-                    var name = entries[i].substr(0, entries[i].length-5)
+                    var name = entries[i].substr(0, entries[i].length-5);
                     result.push(name);
                 }
             });
             return result;
         },
         getOutline: function(scope, name) {
-            var result = [];
-            if (!name) return;
-            name = name.toLowerCase()
+            if (!name) {
+                return;
+            }
+            name = name.toLowerCase();
             // get outlines from json directory
             name = 'json/' + name;
 
@@ -92,12 +102,14 @@ ol.service('dropboxService', function() {
             return outlineData;
         },
         putOutline: function(name, data) {
-            if (!name) return;
+            if (!name) {
+                return;
+            }
             name = name.toLowerCase();
             // store outlines in json directory
             name = 'json/' + name;
             var dropboxData = JSON.stringify(data);
-            client.writeFile(name, dropboxData, function(error, stat) {
+            client.writeFile(name, dropboxData, function(error) {
                 if (error) {
                     console.log('[ERROR] writing file');
                     console.log(error);

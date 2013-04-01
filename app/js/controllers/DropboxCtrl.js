@@ -1,8 +1,7 @@
-'use strict';
-
 ol.controller('DropboxCtrl',
                      function dropboxCtrl($scope,
                                           dropboxService) {
+    'use strict';
     $scope.dropboxConnected = false;
 
     // try to connect with cached credentials on load
@@ -15,6 +14,6 @@ ol.controller('DropboxCtrl',
 
     $scope.dropboxConnect = function() {
         dropboxService.auth($scope);
-    }
+    };
 });
 

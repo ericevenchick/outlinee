@@ -1,12 +1,11 @@
-'use strict';
-
 var titleAutocompleteDirective =
     angular.module('ol.titleAutocompleteDirective',
     []);
 
 titleAutocompleteDirective.directive('olTitleAutocomplete', function() {
+    'use strict';
     return {
-        link: function(scope, element, attrs) {
+        link: function(scope, element) {
             element.autocomplete({
                 source: scope.outlineTitleList,
                 select: function() {
@@ -28,6 +27,6 @@ titleAutocompleteDirective.directive('olTitleAutocomplete', function() {
             });
 
         }
-    }
+    };
 });
 
