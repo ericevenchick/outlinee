@@ -13,6 +13,8 @@ ol.controller('OutlineCtrl',
     $scope.version = VERSION;
     // assume not modified on start
     $scope.modified = false;
+    // start outline off blank
+    $scope.outline = BLANK_OUTLINE;
 
     // use path to get outline name
     // TODO: this could use real routing rather than substr
@@ -24,9 +26,9 @@ ol.controller('OutlineCtrl',
     // grab the outlines from dropbox
     $scope.$on('dropboxConnected', function() {
         if (dropboxService.isAuthenticated()) {
-            $scope.outlineTitleList = dropboxService.getList();
-            // also create the folder for outlines here, since it may not exist
+            // create the folder for outlines here, since it may not exist
             dropboxService.mkdir('json');
+            $scope.outlineTitleList = dropboxService.getList($scope);
         }
     });
 
@@ -34,19 +36,22 @@ ol.controller('OutlineCtrl',
     $scope.$watch('outline.data', function() {
         // mark that the outline has been modified
         $scope.modified = true;
-        // only save if the title is defined and if there is content
+        // only save if the title is defined and if there is content, and this
+        // isn't a list of outlines
         if ($scope.outlineTitle &&
             $scope.outline.data &&
             $scope.outline.data.length > 0 &&
-            $scope.outline.data[0].str !== '') {
+            $scope.outline.data[0].str !== '' && !$scope.outline.isList) {
                 localStorageService.put($scope.outlineTitle,
                                         $scope.outline);
             }
     }, true);
     // when an item is blured, save to dropbox
     $scope.$on('outlineItemBlur', function() {
-        // only save if modified
-        if ($scope.modified && $scope.outline.data[0].str !== '') {
+        // only save if modified, there's a title, there's data, and this isn't
+        // a list of outlines
+        if ($scope.modified && $scope.outlineTitle != '' &&
+            $scope.outline.data[0].str !== '' && !$scope.outline.isList) {
             dropboxService.putOutline($scope.outlineTitle + '.json',
                 $scope.outline);
             // mark outline as saved
@@ -56,8 +61,10 @@ ol.controller('OutlineCtrl',
 
     // save when leaving page
     $window.onbeforeunload = function() {
-        // only save if modified, and there's content
-        if ($scope.modified && $scope.outline.data[0].str !== '') {
+        // only save if modified, there's content, there's a title, and this
+        // isn't a list of outlines
+        if ($scope.modified && $scope.outline.data[0].str !== '' &&
+            $scope.outlineTitle != '' && $scope.outline.isList) {
             dropboxService.putOutline($scope.outlineTitle + '.json',
                 $scope.outline);
         }
@@ -67,6 +74,11 @@ ol.controller('OutlineCtrl',
     $scope.$watch('outlineTitle', function() {
         var loaded = false;
         if (dropboxService.isAuthenticated()) {
+            // load a list if empty
+            if ($scope.outlineTitle == '') {
+                dropboxService.getList($scope)
+                return;
+            }
             // start fetching from dropbox if the outline exists
             // FIXME: not IE safe, define indexOf manually?
             if ($scope.outlineTitleList.indexOf($scope.outlineTitle) >=0) {
@@ -333,5 +345,21 @@ ol.controller('OutlineCtrl',
         $scope.$apply();
         // apply focus
         toFocus.focus();
+    };
+
+    // display a list of outlines as the outline
+    $scope.makeOutlineList = function(list, doApply) {
+        // only do this if no outline is loaded
+        if ($scope.outline != BLANK_OUTLINE && $scope.outlineTitle != '') {
+            return;
+        }
+        $scope.outline = {data:[]}
+        $scope.outline.isList = true;
+        for (var i=0; i < list.length; i++) {
+            $scope.outline.data.push({ind: 0, str: list[i]})
+        }
+        if (doApply) {
+            $scope.$apply();
+        }
     };
 });

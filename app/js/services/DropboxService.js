@@ -53,7 +53,7 @@ ol.service('dropboxService', function() {
                 return true;
             });
         },
-        getList: function() {
+        getList: function(scope) {
             var result = [];
             if (!client || !client.isAuthenticated()) {
                 return false;
@@ -72,6 +72,8 @@ ol.service('dropboxService', function() {
                     var name = entries[i].substr(0, entries[i].length-5);
                     result.push(name);
                 }
+                // display the list
+                scope.makeOutlineList(result, true)
             });
             return result;
         },
