@@ -18,7 +18,7 @@ BUILD_ID = $(shell echo `date +%s`)
 JS_BUILD = $(JS_BUILD_DIR)/outlinee$(BUILD_ID).min.js
 HTML_BUILD = $(BUILD_DIR)/index.html $(BUILD_DIR)/about.html
 
-CLOSURE_COMPILE = java -jar util/compiler.jar --compilation_level WHITESPACE_ONLY
+CLOSURE_COMPILE = java -jar util/compiler.jar --compilation_level SIMPLE_OPTIMIZATIONS
 
 # build for web
 web: $(HTML_BUILD) $(JS_BUILD) $(BUILD_DIR) css

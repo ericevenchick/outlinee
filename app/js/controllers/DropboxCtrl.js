@@ -1,4 +1,4 @@
-ol.controller('DropboxCtrl',
+ol.controller('DropboxCtrl', ['$scope', 'dropboxService',
                      function dropboxCtrl($scope,
                                           dropboxService) {
     'use strict';
@@ -15,5 +15,4 @@ ol.controller('DropboxCtrl',
     $scope.dropboxConnect = function() {
         dropboxService.auth($scope);
     };
-});
-
+}]);

@@ -1,8 +1,10 @@
 ol.controller('OutlineCtrl',
-              function outlineCtrl($scope,
-                                   localStorageService,
-                                   dropboxService,
-                                   $location, $window) {
+              ['$scope', 'localStorageService', 'dropboxService',
+	       '$location', '$window', 
+		function outlineCtrl($scope,
+                localStorageService,
+                dropboxService,
+                $location, $window) {
     'use strict';
     // constants
     var INDENT_SIZE = 40;
@@ -362,4 +364,4 @@ ol.controller('OutlineCtrl',
             $scope.$apply();
         }
     };
-});
+}]);
