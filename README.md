@@ -1,7 +1,7 @@
-# Outlinear
+# Outline
 
-Outlinear is an outliner written in HTML5 and Javascript, using the
+Outlinee is an outliner written in HTML5 and Javascript, using the
 [AngularJS](http://www.angularjs.org) framework.
 
 ## Try it
-A demo is available [here](http://ericevenchick.github.com/outlinear).
+You can use the latest stable release of Outlinee [here](http://outlinee.com)
