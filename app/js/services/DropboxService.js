@@ -6,8 +6,8 @@ ol.service('dropboxService', function() {
     return {
         connect: function(scope) {
             client = new Dropbox.Client({
-                key: DROPBOX_KEY
-                   sandbox: true});
+                key: DROPBOX_KEY,
+                sandbox: true});
             client.authDriver(new Dropbox.Drivers.Redirect(
                     {rememberUser: true}));
             client.authenticate({interactive: false},
