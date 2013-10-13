@@ -337,7 +337,8 @@ ol.controller('OutlineCtrl',
         // choose element to focus before view gets updates
         // otherwise we can't find it
         var toFocus;
-        if (index > 0) {
+        // if this is the last element focus one up, otherwise focus one down
+        if (index >= $scope.outline.data.length) {
             toFocus = $(el).parent().prev().children();
         } else {
             toFocus = $(el).parent().next().children();
