@@ -28,7 +28,7 @@ ol.factory('localStorageService', function() {
             for (var key in localStorage) {
                 var keySplit = key.split('-');
                 // check that key is an outline
-                if (keySplit[0] === "ol") {
+                if (keySplit[0] === 'ol') {
                     keys.push(keySplit[1]);
                 }
             }

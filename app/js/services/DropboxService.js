@@ -1,3 +1,4 @@
+var DROPBOX_KEY = 'qHAKiRxtIqA=|OdZ7A5Wo3uPEA8Zittjh+nxnpEY5UwntwPNp5ORNOA==';
 ol.service('dropboxService', function() {
     'use strict';
     var client;
@@ -5,7 +6,7 @@ ol.service('dropboxService', function() {
     return {
         connect: function(scope) {
             client = new Dropbox.Client({
-                key: 'qHAKiRxtIqA=|OdZ7A5Wo3uPEA8Zittjh+nxnpEY5UwntwPNp5ORNOA==',
+                key: DROPBOX_KEY
                    sandbox: true});
             client.authDriver(new Dropbox.Drivers.Redirect(
                     {rememberUser: true}));
@@ -59,7 +60,7 @@ ol.service('dropboxService', function() {
                 return false;
             }
 
-            client.readdir("/json", function(error, entries) {
+            client.readdir('/json', function(error, entries) {
                 if (error) {
                     console.log('[ERROR] getting entry list from Dropbox');
                     console.log(error);
@@ -67,13 +68,13 @@ ol.service('dropboxService', function() {
                 }
                 // copy entries into result array
                 // TODO: could this be simpler?
-                for (var i=0; i < entries.length; i++) {
+                for (var i = 0; i < entries.length; i++) {
                     // remove '.json' from name
-                    var name = entries[i].substr(0, entries[i].length-5);
+                    var name = entries[i].substr(0, entries[i].length - 5);
                     result.push(name);
                 }
                 // display the list
-                scope.makeOutlineList(result, true)
+                scope.makeOutlineList(result, true);
             });
             return result;
         },

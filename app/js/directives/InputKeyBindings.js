@@ -104,7 +104,7 @@ keyBindingDirective.directive('olVimInputKeybindings', function() {
             // command mode (!insert_mode) keys
             if (!insert_mode) {
                 e.preventDefault();
-                switch(e.keyCode) {
+                switch (e.keyCode) {
                     case 74: // j: go down
                         scope.focusNext(el);
                         break;

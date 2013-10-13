@@ -52,4 +52,7 @@ clean:
 deploy:
 	s3cmd -P --guess-mime-type sync build/. s3://outlinee.com
 
+lint:
+	gjslint --nojsdoc -r app/js
+
 .PHONY: clean web deploy css use-compiled

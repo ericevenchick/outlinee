@@ -1,7 +1,7 @@
 ol.controller('OutlineCtrl',
               ['$scope', 'localStorageService', 'dropboxService',
-	       '$location', '$window', 
-		function outlineCtrl($scope,
+            '$location', '$window',
+        function outlineCtrl($scope,
                 localStorageService,
                 dropboxService,
                 $location, $window) {
@@ -78,13 +78,14 @@ ol.controller('OutlineCtrl',
         if (dropboxService.isAuthenticated()) {
             // load a list if empty
             if ($scope.outlineTitle == '') {
-                dropboxService.getList($scope)
+                dropboxService.getList($scope);
                 return;
             }
             // start fetching from dropbox if the outline exists
             // FIXME: not IE safe, define indexOf manually?
-            if ($scope.outlineTitleList.indexOf($scope.outlineTitle) >=0) {
-                dropboxService.getOutline($scope, $scope.outlineTitle + '.json');
+            if ($scope.outlineTitleList.indexOf($scope.outlineTitle) >= 0) {
+                dropboxService.getOutline($scope, $scope.outlineTitle +
+                                          '.json');
             }
         } else {
             // load from localStorage if not connected to dropbox
@@ -206,7 +207,8 @@ ol.controller('OutlineCtrl',
     // set strikethrough property of the line
     $scope.toggleStrike = function(el) {
         var index = $scope.getInputIndex(el);
-        $scope.outline.data[index].strike = !($scope.outline.data[index].strike);
+        $scope.outline.data[index].strike = !(
+            $scope.outline.data[index].strike);
         $scope.$apply();
     };
 
@@ -216,7 +218,7 @@ ol.controller('OutlineCtrl',
         // add an element after the current one
         $scope.outline.data.splice(index + 1, 0, {
             str: '',
-            ind:0
+            ind: 0
         });
         // poke the view
         $scope.$apply();
@@ -236,7 +238,7 @@ ol.controller('OutlineCtrl',
         }
 
         // prevent moving if element above is of lower indent level
-        if ($scope.outline.data[index-1].ind <
+        if ($scope.outline.data[index - 1].ind <
             $scope.outline.data[index].ind) {
                 return;
             }
@@ -261,7 +263,7 @@ ol.controller('OutlineCtrl',
         }
 
         // prevent moving if element above is of lower indent level
-        if ($scope.outline.data[index-1].ind <
+        if ($scope.outline.data[index - 1].ind <
             $scope.outline.data[index].ind) {
                 return;
             }
@@ -306,8 +308,8 @@ ol.controller('OutlineCtrl',
         }
 
         // prevent moving if element below group is of lower indent level
-        if ($scope.outline.data[index+numElements] &&
-            $scope.outline.data[index+numElements].ind <
+        if ($scope.outline.data[index + numElements] &&
+            $scope.outline.data[index + numElements].ind <
             $scope.outline.data[index].ind) {
                 return;
             }
@@ -335,7 +337,8 @@ ol.controller('OutlineCtrl',
         var index = $scope.getInputIndex(el);
         // do not allow an element to be deleted if it has children
         if ($scope.outline.data[index + 1] &&
-            ($scope.outline.data[index + 1].ind > $scope.outline.data[index].ind)
+            ($scope.outline.data[index + 1].ind >
+            $scope.outline.data[index].ind)
             ) {
             return;
         }
@@ -363,10 +366,10 @@ ol.controller('OutlineCtrl',
         if ($scope.outline != BLANK_OUTLINE && $scope.outlineTitle != '') {
             return;
         }
-        $scope.outline = {data:[]}
+        $scope.outline = {data: []};
         $scope.outline.isList = true;
-        for (var i=0; i < list.length; i++) {
-            $scope.outline.data.push({ind: 0, str: list[i]})
+        for (var i = 0; i < list.length; i++) {
+            $scope.outline.data.push({ind: 0, str: list[i]});
         }
         if (doApply) {
             $scope.$apply();
