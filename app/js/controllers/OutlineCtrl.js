@@ -250,7 +250,7 @@ ol.controller('OutlineCtrl',
         {
             numElements = numElements + 1;
         }
-        // number ofchildren of previous element,
+        // number of children of previous element,
         // skip over these when inserting
         var numSkip = 1;
         while (($scope.outline.data[index - numSkip]) &&
@@ -333,8 +333,15 @@ ol.controller('OutlineCtrl',
         }
 
         var index = $scope.getInputIndex(el);
+        // do not allow an element to be deleted if it has children
+        if ($scope.outline.data[index + 1] &&
+            ($scope.outline.data[index + 1].ind > $scope.outline.data[index].ind)
+            ) {
+            return;
+        }
         $scope.outline.data.remove(index);
-        // choose element to focus before view gets updates
+
+        // choose element to focus before view gets updated
         // otherwise we can't find it
         var toFocus;
         // if this is the last element focus one up, otherwise focus one down
