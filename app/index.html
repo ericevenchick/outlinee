@@ -7,9 +7,10 @@
     notes and syncing them with Dropbox">
     <link rel='stylesheet' href='css/style.css'>
     <link rel='stylesheet' href='css/libs/jquery-ui-min.css'>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/dropbox.js/0.9.1/dropbox.min.js"></script>
     <!--outlinee js-->
     <script src='js/app.js'></script>
@@ -43,7 +44,7 @@
 
     <section class='outline-content'>
     <ul class='outline-list'>
-      <li ng-repeat='line in outline.data' style={{styleForLine(line)}}>
+      <li ng-repeat='line in outline.data track by $index' style={{styleForLine(line)}}>
       <div
         contenteditable
         ng-model='line' ol-standard-input-keybindings

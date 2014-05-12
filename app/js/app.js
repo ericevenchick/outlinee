@@ -10,7 +10,8 @@ Array.prototype.remove = function(from, to) {
 };
 
 var ol = angular.module('ol',
-                        ['ol.keyBindingDirective',
+                        ['ngRoute',
+                         'ol.keyBindingDirective',
                          'ol.contentEditableDirective',
                          'ol.titleAutocompleteDirective']);
 

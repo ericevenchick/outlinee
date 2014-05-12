@@ -220,7 +220,6 @@ ol.controller('OutlineCtrl',
             str: '',
             ind: 0
         });
-        // poke the view
         $scope.$apply();
         // set the indent to the current element's indent
         // need to pass input element, which is the only child of the next li
@@ -273,10 +272,10 @@ ol.controller('OutlineCtrl',
         for (var i = 0; i < temp.length; i++) {
             $scope.outline.data.splice(index - numSkip + i, 0, temp[i]);
         }
-        $scope.$apply();
 
         // refocus the element
-        el.focus();
+        $(el).focus();
+        $scope.focusPrev(el);
     };
 
     // move a line down one position
@@ -314,17 +313,14 @@ ol.controller('OutlineCtrl',
                 return;
             }
 
-
         // perform move
         var temp = $scope.outline.data.splice(index, numElements);
         for (var i = 0; i < temp.length; i++) {
             $scope.outline.data.splice(index + numSkip + i, 0, temp[i]);
         }
 
-        $scope.$apply();
-
         // refocus the element
-        el.focus();
+        $scope.focusNext(el);
     };
 
     // delete a line given its input element
@@ -351,11 +347,9 @@ ol.controller('OutlineCtrl',
         if (index >= $scope.outline.data.length) {
             toFocus = $(el).parent().prev().children();
         } else {
-            toFocus = $(el).parent().next().children();
+            toFocus = $(el).parent().children();
         }
 
-        // poke the view
-        $scope.$apply();
         // apply focus
         toFocus.focus();
     };
