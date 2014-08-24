@@ -8,20 +8,20 @@ keyBindingDirective.directive('olStandardInputKeybindings', function() {
     'use strict';
     return function(scope, el) {
         el.bind('keydown', function(e) {
-            // CTRL key commands
-            if (e.ctrlKey) {
+            // alt key commands
+            if (e.altKey) {
                 switch (e.keyCode) {
-                    case 83: // CTRL-S: strikethrough
+                    case 83: // alt-S: strikethrough
                         e.preventDefault();
                         scope.toggleStrike(el);
                         break;
 
-                    case 40: // CTRL-down: move line down
+                    case 40: // alt-down: move line down
                         e.preventDefault();
                         scope.moveDown(el);
                         break;
 
-                    case 38: // CTRL-up: move line up
+                    case 38: // alt-up: move line up
                         e.preventDefault();
                         scope.moveUp(el);
                         break;
