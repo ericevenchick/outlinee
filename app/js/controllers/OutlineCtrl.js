@@ -273,9 +273,8 @@ ol.controller('OutlineCtrl',
             $scope.outline.data.splice(index - numSkip + i, 0, temp[i]);
         }
 
-        // refocus the element
-        $(el).focus();
-        $scope.focusPrev(el);
+        // refocus the element that was moved
+        $('ul li:nth-child(' + (index - numSkip + 1) + ')').find('div').focus();
     };
 
     // move a line down one position
@@ -319,8 +318,8 @@ ol.controller('OutlineCtrl',
             $scope.outline.data.splice(index + numSkip + i, 0, temp[i]);
         }
 
-        // refocus the element
-        $scope.focusNext(el);
+        // refocus the element that was moved
+        $('ul li:nth-child(' + (index + numSkip + 1) + ')').find('div').focus();
     };
 
     // delete a line given its input element
