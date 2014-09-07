@@ -1,6 +1,6 @@
 'use strict';
 
-var VERSION = '1.0b';
+var VERSION = '0.1b';
 
 // Array Remove - By John Resig (MIT Licensed)
 Array.prototype.remove = function(from, to) {
