@@ -50,7 +50,7 @@ clean:
 	-rm -rf build
 
 deploy:
-	s3cmd -P --guess-mime-type sync build/. s3://outlinee.com
+	s3cmd -P --guess-mime-type sync build/. s3://www.outlinee.com
 
 lint:
 	gjslint --nojsdoc -r app/js
